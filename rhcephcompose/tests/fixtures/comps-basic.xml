@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE comps PUBLIC "-//Red Hat, Inc.//DTD Comps info//EN" "comps.dtd">
+<comps>
+  <group>
+    <id>calamari</id>
+    <name>Red Hat Ceph Calamari</name>
+    <description>Red Hat Ceph Calamari packages</description>
+    <packagelist>
+      <packagereq>calamari-clients</packagereq>
+      <packagereq>calamari-server</packagereq>
+    </packagelist>
+  </group>
+
+  <group>
+    <id>ceph-installer</id>
+    <name>Red Hat Ceph Installer</name>
+    <description>Red Hat Ceph Installer packages</description>
+    <packagelist>
+      <packagereq>ceph-deploy</packagereq>
+      <packagereq>ceph-puppet-modules</packagereq>
+      <packagereq>foreman</packagereq>
+    </packagelist>
+  </group>
+
+  <group>
+    <id>ceph-mon</id>
+    <name>Red Hat Ceph Monitor</name>
+    <description>Red Hat Ceph Monitor packages</description>
+    <packagelist>
+      <packagereq>ceph</packagereq>
+      <packagereq>ceph-common</packagereq>
+      <packagereq>ceph-resource-agents</packagereq>
+      <packagereq>ceph-test</packagereq>
+    </packagelist>
+  </group>
+
+  <group>
+    <id>ceph-osd</id>
+    <name>Red Hat Ceph OSD</name>
+    <description>Red Hat Ceph Object Storage Daemon packages</description>
+    <packagelist>
+      <packagereq>ceph</packagereq>
+      <packagereq>ceph-common</packagereq>
+      <packagereq>ceph-resource-agents</packagereq>
+      <packagereq>ceph-test</packagereq>
+    </packagelist>
+  </group>
+
+  <group>
+    <id>ceph-tools</id>
+    <name>Red Hat Ceph Tools</name>
+    <description>Red Hat Ceph Client Tools packages</description>
+    <default>true</default>
+    <uservisible>true</uservisible>
+    <packagelist>
+      <packagereq>ceph</packagereq>
+      <packagereq>ceph-common</packagereq>
+      <packagereq>ceph-resource-agents</packagereq>
+      <packagereq>ceph-test</packagereq>
+    </packagelist>
+  </group>
+
+</comps>
