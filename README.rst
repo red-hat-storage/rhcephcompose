@@ -17,12 +17,12 @@ shipping the RH Ceph Enterprise product for Ubuntu.
 See Also
 --------
 * ``rhcephcompose`` interacts with a `Chacra
-<https://pypi.python.org/pypi/merfi>`_ instance. It queries Chacra's API for
-build information and downloads build artifacts stored in Chacra. (This is a
-bit similar to the way Pungi and Distill interact with Koji.)
+  <https://pypi.python.org/pypi/merfi>`_ instance. It queries Chacra's
+  API for build information and downloads build artifacts stored in Chacra.
+  (This is a bit similar to the way Pungi and Distill interact with Koji.)
 
-After creating a compose, you may wish to GPG-sign it with `Merfi
-<https://pypi.python.org/pypi/merfi>`_.
+* After creating a compose, you may wish to GPG-sign it with `Merfi
+  <https://pypi.python.org/pypi/merfi>`_.
 
 
 Note regarding Distro version
