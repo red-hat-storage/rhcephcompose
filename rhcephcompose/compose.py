@@ -36,7 +36,7 @@ class Compose(object):
         # In Pungi terminology, assume pkgset_source "chacra" (instead
         # of "koji").
         self.chacra_url = conf['chacra_url']
-        self.chacra_ssl_verify = conf['chacra_ssl_verify']
+        self.chacra_ssl_verify = conf.get('chacra_ssl_verify', True)
         # Lookaside cache location.
         # See freedesktop.org spec for XDG_CACHE_HOME
         try:
