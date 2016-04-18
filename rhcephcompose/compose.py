@@ -80,7 +80,7 @@ class Compose(object):
     def run(self):
         """ High-level function to execute a compose. """
         if not os.path.isdir(self.cache_path):
-            os.mkdirs(self.cache_path)
+            os.makedirs(self.cache_path)
 
         if not os.path.isdir(self.target):
             raise SystemExit('target "%s" is not a directory. Please configure an existing target directory for this compose.' % self.target)
