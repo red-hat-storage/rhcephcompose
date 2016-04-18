@@ -1,5 +1,12 @@
 ``rhcephcompose``
 =================
+
+.. image:: https://travis-ci.org/red-hat-storage/rhcephcompose.svg?branch=master
+             :target: https://travis-ci.org/red-hat-storage/rhcephcompose
+
+.. image:: https://badge.fury.io/py/rhcephcompose.svg
+                :target: https://badge.fury.io/py/rhcephcompose
+
 A tool to gather build artifacts and assemble them into a set of repositories.
 
 ``rhcephcompose`` is a distribution compose tool, similar to Red Hat's `Pungi
