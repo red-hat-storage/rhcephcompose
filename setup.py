@@ -39,11 +39,11 @@ class ReleaseCommand(Command):
         subprocess.check_call(cmd)
 
         # Push package to pypi
-        #cmd = ['python', 'setup.py', 'sdist', 'upload']
-        #if self.sign:
-        #    cmd.append('--sign')
-        #print(' '.join(cmd))
-        #subprocess.check_call(cmd)
+        cmd = ['python', 'setup.py', 'sdist', 'upload']
+        if self.sign:
+            cmd.append('--sign')
+        print(' '.join(cmd))
+        subprocess.check_call(cmd)
 
 class PyTest(TestCommand):
     user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
