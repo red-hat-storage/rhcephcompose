@@ -36,6 +36,7 @@ class Compose(object):
         # In Pungi terminology, assume pkgset_source "chacra" (instead
         # of "koji").
         self.chacra_url = conf['chacra_url']
+        self.chacra_ssl_verify = conf['chacra_ssl_verify']
         # Lookaside cache location.
         # See freedesktop.org spec for XDG_CACHE_HOME
         try:
@@ -132,7 +133,7 @@ class Compose(object):
         # comps.xml + variants.xml.
 
         for build_id in builds:
-            build = Build(build_id)
+            build = Build(build_id, ssl_verify=self.chacra_ssl_verify)
             # Find all the (whitelisted) binaries for this build.
             build.find_artifacts_from_chacra(chacra=self.chacra_url, whitelist=comps.all_packages)
             # Assign each binary to its respective comps group(s).
