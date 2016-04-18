@@ -9,8 +9,9 @@ log = logging.getLogger('cephcomps')
 
 class PackageArtifact(object):
     """ Artifact from a Chacra build. Base class. """
-    def __init__(self, url):
+    def __init__(self, url, ssl_verify=True):
         self.url = url
+        self.ssl_verify = ssl_verify
 
     @property
     def filename(self):
@@ -26,7 +27,7 @@ class PackageArtifact(object):
             log.info('%s already in %s, skipping download' % (self.filename, cache_dir))
         else:
             log.info('Caching %s in %s' % (self.url, cache_dir))
-            r = requests.get(self.url, stream=True)
+            r = requests.get(self.url, stream=True, verify=self.ssl_verify)
             r.raise_for_status()
             with open(cache_dest, 'wb') as f:
                 for chunk in r.iter_content(1024):
@@ -37,8 +38,8 @@ class PackageArtifact(object):
 
 class SourceArtifact(PackageArtifact):
     """ Source Artifact from chacra. """
-    def __init__(self, url):
-        super(SourceArtifact, self).__init__(url=url)
+    def __init__(self, url, ssl_verify=True):
+        super(SourceArtifact, self).__init__(url=url, ssl_verify=ssl_verify)
 
 
 class BinaryArtifact(PackageArtifact):
@@ -47,8 +48,8 @@ class BinaryArtifact(PackageArtifact):
     # Regex to parse the name and version of this binary.
     name_version_re = re.compile('^([^_]+)_([^_]+)')
 
-    def __init__(self, url):
-        super(BinaryArtifact, self).__init__(url=url)
+    def __init__(self, url, ssl_verify=True):
+        super(BinaryArtifact, self).__init__(url=url, ssl_verify=ssl_verify)
 
     @property
     def name(self):

@@ -14,8 +14,9 @@ class Build(object):
     # Regex to parse the name and version of this build.
     name_version_re = re.compile('^([^_]+)_([^_]+)')
 
-    def __init__(self, build_id):
+    def __init__(self, build_id, ssl_verify=True):
         self.build_id = build_id
+        self.ssl_verify = ssl_verify
         # A "Build" contains several "Binaries" and "Sources".
         self.binaries = []
         self.sources = []
@@ -41,7 +42,7 @@ class Build(object):
         """ Populate self.binaries and self.sources """
         log.info('Searching chacra %s for whitelisted binaries' % chacra)
         build_url = self.get_chacra_build_url(chacra)
-        r = requests.get(build_url)
+        r = requests.get(build_url, verify=self.ssl_verify)
         r.raise_for_status()
         build_data = r.json()
         debs = []
@@ -53,7 +54,7 @@ class Build(object):
             for binary in build_data[arch]:
                 log.info('Found "%s" binary package artifact' % binary)
                 binary_url = posixpath.join(build_url, arch, binary)
-                b = BinaryArtifact(url=binary_url)
+                b = BinaryArtifact(url=binary_url, ssl_verify=self.ssl_verify)
                 if b.name in whitelist:
                     log.info('"%s" is in whitelist, saving' % b.name)
                     # This package is listed in comps.xml, so we care
@@ -69,5 +70,5 @@ class Build(object):
         for source in build_data['source']:
             log.info('Found "%s" source package artifact' % source)
             source_url = posixpath.join(build_url, 'source', source)
-            s = SourceArtifact(url=source_url)
+            s = SourceArtifact(url=source_url, ssl_verify=self.ssl_verify)
             self.sources.append(s)
