@@ -30,19 +30,19 @@ class ReleaseCommand(Command):
         cmd = ['git', 'tag', '-a', tag_name, '-m', 'version %s' % version]
         if self.sign:
             cmd.append('-s')
-        print ' '.join(cmd)
+        print(' '.join(cmd))
         subprocess.check_call(cmd)
 
         # Push Git tag to origin remote
         cmd = ['git', 'push', 'origin', tag_name]
-        print ' '.join(cmd)
+        print(' '.join(cmd))
         subprocess.check_call(cmd)
 
         # Push package to pypi
         #cmd = ['python', 'setup.py', 'sdist', 'upload']
         #if self.sign:
         #    cmd.append('--sign')
-        #print ' '.join(cmd)
+        #print(' '.join(cmd))
         #subprocess.check_call(cmd)
 
 class PyTest(TestCommand):
