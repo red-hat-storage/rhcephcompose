@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import subprocess
 
 readme = os.path.join(os.path.dirname(__file__), 'README.rst')
@@ -9,6 +10,7 @@ module_file = open('rhcephcompose/__init__.py').read()
 metadata = dict(re.findall("__([a-z]+)__\s*=\s*'([^']+)'", module_file))
 version = metadata['version']
 
+from setuptools.command.test import test as TestCommand
 from setuptools import setup, Command
 
 class ReleaseCommand(Command):
@@ -43,6 +45,24 @@ class ReleaseCommand(Command):
         #print ' '.join(cmd)
         #subprocess.check_call(cmd)
 
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = ''
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main('rhcephcompose/tests ' + self.pytest_args)
+        sys.exit(errno)
+
 setup(
     name             = 'rhcephcompose',
     description      = 'Distribution compose tool',
@@ -62,5 +82,5 @@ setup(
     tests_require=[
         'pytest',
     ],
-    cmdclass={'release': ReleaseCommand},
+    cmdclass={'test': PyTest, 'release': ReleaseCommand},
 )
