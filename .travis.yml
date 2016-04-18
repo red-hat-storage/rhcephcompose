@@ -2,15 +2,6 @@ language: python
 sudo: false
 python:
     - 2.7
-    - 3.3
-    - 3.4
-    - 3.5
-# kobo does not support py3: https://bugzilla.redhat.com/1328199
-matrix:
-  allow_failures:
-    - python: 3.3
-    - python: 3.4
-    - python: 3.5
 script:
   - python setup.py test
 cache: pip
