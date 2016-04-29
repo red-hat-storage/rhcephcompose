@@ -167,7 +167,6 @@ class Compose(object):
             with open(distributions_path, 'w') as dist_conf_file:
                 dist_conf_file.write(dist_template.format(codename=distro))
 
-
             # Loop through all the comps groups in this variant. (in Ceph we
             # only have one group per variant, so far!)
             for group_id in variant_groups:
