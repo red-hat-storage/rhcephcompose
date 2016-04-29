@@ -56,7 +56,7 @@ class Compose(object):
         if getattr(self, '_output_directory', None):
             return self._output_directory
         compose_date = time.strftime('%Y%m%d')
-        compose_name = 'Ceph-{product_version}-{oslabel}-{arch}-{compose_date}.t.{compose_respin}'
+        compose_name = 'Ceph-{product_version}-{oslabel}-{arch}-{compose_date}.t.{compose_respin}'  # NOQA
         compose_respin = 0
         while 1:
             output_dir = os.path.join(self.target, compose_name.format(
