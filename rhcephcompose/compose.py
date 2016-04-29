@@ -166,8 +166,9 @@ class Compose(object):
                 DebIndices: Packages Release . .gz .bz2
                 DscIndices: Sources Release .gz .bz2
                 Contents: .gz .bz2
+
             ''')
-            with open(distributions_path, 'w') as dist_conf_file:
+            with open(distributions_path, 'a') as dist_conf_file:
                 dist_conf_file.write(dist_template.format(codename=distro))
 
             # Loop through all the comps groups in this variant. (in Ceph we
