@@ -98,7 +98,7 @@ class Compose(object):
             if 'glob' in extra_file:
                 glob_path = os.path.join(self.output_dir, extra_file['glob'])
                 for f in glob.glob(glob_path):
-                     copy(f, self.output_dir)
+                    copy(f, self.output_dir)
             # For "file" type extra files, copy the file from the user's cwd.
             if 'file' in extra_file:
                 copy(extra_file['file'], self.output_dir)
