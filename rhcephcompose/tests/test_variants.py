@@ -17,4 +17,4 @@ class TestVariants(object):
         v.parse_file(fixture_file)
         assert 'Tools' in v
         # Test that the "Tools" variant contains the "ceph-tools" comps group.
-        assert v['Tools'] == [ 'ceph-tools' ]
+        assert v['Tools'] == ['ceph-tools']
