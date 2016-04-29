@@ -48,7 +48,7 @@ class Build(object):
         build_data = r.json()
         debs = []
         # Find binary deb for arches we care about.
-        for arch in [ 'noarch', 'amd64' ]:
+        for arch in ['noarch', 'amd64']:
             if arch not in build_data:
                 continue
             log.info('Arch "%s" has %d pkgs' % (arch, len(build_data[arch])))
