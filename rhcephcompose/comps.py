@@ -34,8 +34,8 @@ class Comps(object):
                         # Also store this in the "all_packages" list
                         self.all_packages.append(pkg.text)
             if not group.group_id:
-               log.error('No group <id> found in <group>')
-               exit(1)
+                log.error('No group <id> found in <group>')
+                exit(1)
             self.groups[group.group_id] = group
 
     def assign_binary_to_groups(self, binary):
