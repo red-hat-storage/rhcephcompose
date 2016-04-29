@@ -1,10 +1,6 @@
 import glob
 import logging
-import xml.etree.ElementTree as ET
 import os
-import posixpath
-import re
-import requests
 from rhcephcompose import Build, Comps, Variants
 from shutil import copy
 import subprocess

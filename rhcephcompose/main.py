@@ -1,8 +1,6 @@
 """ rhcephcompose CLI """
 
 from argparse import ArgumentParser
-from os.path import basename
-import sys
 import kobo.conf
 from rhcephcompose.compose import Compose
 
