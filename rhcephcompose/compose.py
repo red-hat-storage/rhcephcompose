@@ -204,6 +204,7 @@ class Compose(object):
             for i in err:
                 log.error(i)
         if exit_code != 0:
-            raise RuntimeError('command failed with status code: %s' % exit_code)
+            msg = 'command failed with status code: %s'
+            raise RuntimeError(msg % exit_code)
 
 
