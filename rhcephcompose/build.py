@@ -35,7 +35,8 @@ class Build(object):
 
     def get_chacra_build_url(self, chacra_url):
         """ Return a URL to this build's artifacts in chacra. """
-        pieces = [ chacra_url, 'binaries', self.name, self.version, 'ubuntu', 'all' ]
+        pieces = [chacra_url, 'binaries', self.name, self.version, 'ubuntu',
+                  'all']
         return posixpath.join(*pieces)
 
     def find_artifacts_from_chacra(self, chacra, whitelist):
@@ -65,7 +66,8 @@ class Build(object):
                     log.info('"%s" pkg not whitelisted, skipping' % b.name)
         # Find sources for this build.
         if 'source' not in build_data:
-            log.error('Build "%s" has no source artifacts in chacra' % self.build_id)
+            msg = 'Build "%s" has no source artifacts in chacra'
+            log.error(msg % self.build_id)
             exit(1)
         for source in build_data['source']:
             log.info('Found "%s" source package artifact' % source)
