@@ -108,7 +108,7 @@ class Compose(object):
         # Read the "builds_path" text file for this distro. Create a list of
         # each line of this file.
         builds_path = self.builds[distro]
-        builds = [ line.rstrip('\n') for line in open(builds_path) ]
+        builds = [line.rstrip('\n') for line in open(builds_path)]
 
         log.info('Found %d build ids in "%s"' % (len(builds), builds_path))
 
