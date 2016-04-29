@@ -5,9 +5,8 @@ import re
 import requests
 
 from rhcephcompose.artifacts import BinaryArtifact, SourceArtifact
+from rhcephcompose import log
 
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger('cephcomps')
 
 
 class Build(object):

@@ -1,14 +1,11 @@
 import glob
 import logging
 import os
-from rhcephcompose import Build, Comps, Variants
+from rhcephcompose import Build, Comps, Variants, log
 from shutil import copy
 import subprocess
 import textwrap
 import time
-
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger('cephcomps')
 
 
 class Compose(object):

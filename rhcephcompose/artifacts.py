@@ -4,8 +4,7 @@ import re
 import requests
 from shutil import copy
 
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger('cephcomps')
+from rhcephcompose import log
 
 
 class PackageArtifact(object):

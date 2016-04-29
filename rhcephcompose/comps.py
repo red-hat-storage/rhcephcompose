@@ -1,8 +1,7 @@
 import logging
 import xml.etree.ElementTree as ET
 
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger('cephcomps')
+from rhcephcompose import log
 
 
 class CompsGroup(list):
