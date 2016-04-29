@@ -46,7 +46,6 @@ class Build(object):
         r = requests.get(build_url, verify=self.ssl_verify)
         r.raise_for_status()
         build_data = r.json()
-        debs = []
         # Find binary deb for arches we care about.
         for arch in ['noarch', 'amd64']:
             if arch not in build_data:
