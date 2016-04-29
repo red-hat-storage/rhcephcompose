@@ -7,6 +7,7 @@ from shutil import copy
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('cephcomps')
 
+
 class PackageArtifact(object):
     """ Artifact from a Chacra build. Base class. """
     def __init__(self, url, ssl_verify=True):

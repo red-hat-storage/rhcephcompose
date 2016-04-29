@@ -10,6 +10,7 @@ from rhcephcompose.artifacts import BinaryArtifact, SourceArtifact
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('cephcomps')
 
+
 class Build(object):
     # Regex to parse the name and version of this build.
     name_version_re = re.compile('^([^_]+)_([^_]+)')

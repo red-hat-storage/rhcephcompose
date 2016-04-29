@@ -1,5 +1,6 @@
 from rhcephcompose.artifacts import BinaryArtifact, SourceArtifact
 
+
 class TestArtifacts(object):
 
     def test_binary(self):

@@ -4,6 +4,7 @@ from rhcephcompose.comps import Comps
 TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURES_DIR = os.path.join(TESTS_DIR, 'fixtures')
 
+
 class TestComps(object):
 
     def test_constructor(self):

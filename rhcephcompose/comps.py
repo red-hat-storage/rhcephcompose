@@ -4,11 +4,13 @@ import xml.etree.ElementTree as ET
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('cephcomps')
 
+
 class CompsGroup(list):
     """ A list of packages in a comps <group>. """
     def __init__(self, group_id=None):
         self.group_id = group_id
         self.binaries = []
+
 
 class Comps(object):
 

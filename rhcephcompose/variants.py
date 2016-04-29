@@ -1,6 +1,7 @@
 import glob
 import xml.etree.ElementTree as ET
 
+
 class Variants(dict):
 
     def parse_file(self, filename):

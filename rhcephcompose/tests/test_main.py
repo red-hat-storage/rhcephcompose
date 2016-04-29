@@ -6,6 +6,7 @@ from rhcephcompose.compose import Compose
 TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURES_DIR = os.path.join(TESTS_DIR, 'fixtures')
 
+
 class TestMain(object):
 
     def test_constructor(self, monkeypatch):
