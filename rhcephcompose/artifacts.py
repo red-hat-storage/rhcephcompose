@@ -25,7 +25,8 @@ class PackageArtifact(object):
         cache_dest = os.path.join(cache_dir, self.filename)
         # Do we have a cached copy of this file, or not?
         if os.path.isfile(cache_dest):
-            log.info('%s already in %s, skipping download' % (self.filename, cache_dir))
+            msg = '%s already in %s, skipping download'
+            log.info(msg % (self.filename, cache_dir))
         else:
             log.info('Caching %s in %s' % (self.url, cache_dir))
             r = requests.get(self.url, stream=True, verify=self.ssl_verify)
