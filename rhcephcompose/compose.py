@@ -206,5 +206,3 @@ class Compose(object):
         if exit_code != 0:
             msg = 'command failed with status code: %s'
             raise RuntimeError(msg % exit_code)
-
-
