@@ -41,5 +41,6 @@ class Comps(object):
     def assign_binary_to_groups(self, binary):
         for group in self.groups.values():
             if binary.name in group:
-                log.info('binary %s is in group %s, appending.' % (binary.name, group.group_id))
+                msg = 'binary %s is in group %s, appending.'
+                log.info(msg % (binary.name, group.group_id))
                 group.binaries.append(binary)
