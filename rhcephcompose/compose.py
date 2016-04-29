@@ -79,6 +79,13 @@ class Compose(object):
         if not os.path.isdir(self.target):
             raise SystemExit('target "%s" is not a directory. Please configure an existing target directory for this compose.' % self.target)
 
+        # Make top-level output directory for this compose.
+        os.mkdir(self.output_dir)
+
+        # Top-level "sources" directory, parallel to our output_dir.
+        sources_dir = self.output_dir + '-sources'
+        os.mkdir(sources_dir)
+
         # Run the steps for each distro.
         for distro in self.builds.keys():
             # (We assume that all keys in self.builds also exist in
@@ -102,6 +109,10 @@ class Compose(object):
 
     def run_distro(self, distro):
         """ Execute a compose for a distro. """
+
+        # Top-level "sources" directory, parallel to our output_dir.
+        sources_dir = self.output_dir + '-sources'
+
         # Read the "builds_path" text file for this distro. Create a list of
         # each line of this file.
         builds_path = self.builds[distro]
@@ -114,13 +125,6 @@ class Compose(object):
         comps_file = self.comps[distro]
         comps = Comps()
         comps.parse_file(comps_file)
-
-        # Make top-level output directory for this compose.
-        os.mkdir(self.output_dir)
-
-        # Top-level "sources" directory, parallel to our output_dir.
-        sources_dir = self.output_dir + '-sources'
-        os.mkdir(sources_dir)
 
         # Copy the builds' files to the correct directories, according to
         # comps.xml + variants.xml.
