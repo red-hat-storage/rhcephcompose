@@ -147,12 +147,14 @@ class Compose(object):
         for variant_id, variant_groups in variants.items():
             # Top-level directory for this repository:
             variant_dir = os.path.join(self.output_dir, variant_id)
-            os.mkdir(variant_dir)
+            if not os.path.isdir(variant_dir):
+                os.mkdir(variant_dir)
 
             # Set up the reprepro configuration:
             log.info('Creating reprepro configuration for %s' % variant_id)
             conf_dir = os.path.join(variant_dir, 'conf')
-            os.mkdir(conf_dir)
+            if not os.path.isdir(conf_dir):
+                os.mkdir(conf_dir)
             distributions_path = os.path.join(conf_dir, 'distributions')
             dist_template = textwrap.dedent('''\
                 Codename: {codename}
