@@ -90,8 +90,10 @@ class Compose(object):
             # (We assume that all keys in self.builds also exist in
             # self.comps.)
             if distro not in self.comps.keys():
-                log.error('Loading builds for "%s", and the comps configuration is missing a "%s" key. Please add a comps XML file for this distro.')
-                exit(1)
+                msg = ('Loading builds for "{0}", and the comps '
+                       'configuration is missing a "{0}" key. Please add a '
+                       'comps XML file for this distro.').format(distro)
+                raise SystemExit(msg)
             self.run_distro(distro)
 
         # Copy any extra files to the root of the compose.
