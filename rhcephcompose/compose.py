@@ -76,7 +76,7 @@ class Compose(object):
             os.makedirs(self.cache_path)
 
         if not os.path.isdir(self.target):
-            raise SystemExit('target "%s" is not a directory. Please configure an existing target directory for this compose.' % self.target)
+            os.makedirs(self.target)
 
         # Make top-level output directory for this compose.
         os.mkdir(self.output_dir)
