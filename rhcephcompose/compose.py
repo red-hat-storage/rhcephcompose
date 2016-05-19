@@ -133,14 +133,16 @@ class Compose(object):
         for build_id in builds:
             build = Build(build_id, ssl_verify=self.chacra_ssl_verify)
             # Find all the (whitelisted) binaries for this build.
-            build.find_artifacts_from_chacra(chacra=self.chacra_url, whitelist=comps.all_packages)
+            build.find_artifacts_from_chacra(chacra=self.chacra_url,
+                                             whitelist=comps.all_packages)
             # Assign each binary to its respective comps group(s).
             for binary in build.binaries:
                 comps.assign_binary_to_groups(binary)
             # Download all the source artifacts for this build and put them in
             # the "sources" directory.
             for source in build.sources:
-                source.download(cache_dir=self.cache_path, dest_dir=sources_dir)
+                source.download(cache_dir=self.cache_path,
+                                dest_dir=sources_dir)
 
         variants = Variants()
         variants.parse_file(self.variants_file)
@@ -180,7 +182,9 @@ class Compose(object):
                 log.info('Comps group ID "%s" contains %d binaries %s' % (group_id, len(binaries), list(map(lambda x: x.filename, binaries))))
                 for binary in binaries:
                     # Add this binary to our variant's repo/directory:
-                    self.add_binary_to_repo(binary=binary, repo_path=variant_dir, distro=distro)
+                    self.add_binary_to_repo(binary=binary,
+                                            repo_path=variant_dir,
+                                            distro=distro)
 
     def add_binary_to_repo(self, binary, repo_path, distro):
         """ Add a binary (.deb) to a Debian repository. """
