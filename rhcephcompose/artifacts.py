@@ -4,7 +4,7 @@ import re
 import requests
 from shutil import copy
 
-from rhcephcompose import log
+from rhcephcompose.log import log
 
 
 class PackageArtifact(object):

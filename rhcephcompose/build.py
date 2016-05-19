@@ -5,7 +5,7 @@ import re
 import requests
 
 from rhcephcompose.artifacts import BinaryArtifact, SourceArtifact
-from rhcephcompose import log
+from rhcephcompose.log import log
 
 
 

@@ -1,7 +1,7 @@
 import logging
 import xml.etree.ElementTree as ET
 
-from rhcephcompose import log
+from rhcephcompose.log import log
 
 
 class CompsGroup(list):
