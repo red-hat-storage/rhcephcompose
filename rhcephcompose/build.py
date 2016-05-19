@@ -7,7 +7,6 @@ from rhcephcompose.artifacts import BinaryArtifact, SourceArtifact
 from rhcephcompose.log import log
 
 
-
 class Build(object):
     # Regex to parse the name and version of this build.
     name_version_re = re.compile('^([^_]+)_([^_]+)')
