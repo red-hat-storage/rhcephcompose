@@ -1,5 +1,4 @@
 import glob
-import logging
 import os
 from rhcephcompose import Build, Comps, Variants, log
 from shutil import copy
