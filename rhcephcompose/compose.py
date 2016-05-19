@@ -183,7 +183,9 @@ class Compose(object):
             for group_id in variant_groups:
                 # Loop through all the binaries in this comps group
                 binaries = comps.groups[group_id].binaries
-                log.info('Comps group ID "%s" contains %d binaries %s' % (group_id, len(binaries), list(map(lambda x: x.filename, binaries))))
+                msg = 'Comps group ID "%s" contains %d binaries %s'
+                msg_binaries = list(map(lambda x: x.filename, binaries))
+                log.info(msg % (group_id, len(binaries), msg_binaries))
                 for binary in binaries:
                     # Add this binary to our variant's repo/directory:
                     self.add_binary_to_repo(binary=binary,
@@ -193,7 +195,8 @@ class Compose(object):
     def add_binary_to_repo(self, binary, repo_path, distro):
         """ Add a binary (.deb) to a Debian repository. """
         binary.download(cache_dir=self.cache_path)
-        log.info('Running reprepro to add %s to %s distro in %s' % (binary.name, distro, repo_path))
+        msg = 'Running reprepro to add %s to %s distro in %s'
+        log.info(msg % (binary.name, distro, repo_path))
         binary_path = os.path.join(self.cache_path, binary.filename)
         command = [
             'reprepro',
