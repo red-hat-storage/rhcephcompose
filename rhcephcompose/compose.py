@@ -8,16 +8,18 @@ import time
 
 
 class Compose(object):
-    """ A "compose" is a particular "spin" or "release" . It is a collection of
-        repositories. """
+    """
+    A "compose" is a particular "spin" or "release" . It is a collection
+    of repositories.
+    """
 
     def __init__(self, conf):
         """ This constructor simply stores all our settings; it takes no
         actions. See run() for that. """
-        # Build lists are normally in the Errata Tool or a Brew tag. There's no
-        # support for Ubuntu builds in Brew or the Errata Tool today, so I just
-        # list each build in text files. The "builds" dict here contains a text
-        # file for each distro.
+        # Build lists are normally in the Errata Tool or a Brew tag. There's
+        # no support for Ubuntu builds in Brew or the Errata Tool today, so I
+        # just list each build in text files. The "builds" dict here contains
+        # a text file for each distro.
         self.builds = conf['builds']
         # In Pungi terminology, assume gather_source "comps" (see also
         # Pungi's "comps_file".)
@@ -45,10 +47,12 @@ class Compose(object):
 
     @property
     def output_dir(self):
-        """ Use the same logic that pungi/compose.py uses in order come up with
-            the name for the output directory. The name should be something
-            like "Ceph-1.3-Ubuntu-20160922.t.0-x86_64" to match what
-            distill/pungi creates. """
+        """
+        Use the same logic that pungi/compose.py uses in order come up with
+        the name for the output directory. The name should be something
+        like "Ceph-1.3-Ubuntu-20160922.t.0-x86_64" to match what
+        distill/pungi creates.
+        """
         if getattr(self, '_output_directory', None):
             return self._output_directory
         compose_date = time.strftime('%Y%m%d')
