@@ -61,7 +61,7 @@ class PyTest(TestCommand):
 
     def run_tests(self):
         import pytest
-        errno = pytest.main('rhcephcompose/tests ' + self.pytest_args)
+        errno = pytest.main('rhcephcompose --flake8 ' + self.pytest_args)
         sys.exit(errno)
 
 setup(
@@ -82,6 +82,7 @@ setup(
     ],
     tests_require=[
         'pytest',
+        'pytest-flake8',
     ],
     cmdclass={'test': PyTest, 'release': ReleaseCommand},
 )
