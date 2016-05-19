@@ -13,6 +13,7 @@ version = metadata['version']
 from setuptools.command.test import test as TestCommand
 from setuptools import setup, Command
 
+
 class ReleaseCommand(Command):
     """ Tag and push a new release. """
 
@@ -45,6 +46,7 @@ class ReleaseCommand(Command):
         print(' '.join(cmd))
         subprocess.check_call(cmd)
 
+
 class PyTest(TestCommand):
     user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
 
@@ -58,23 +60,22 @@ class PyTest(TestCommand):
         self.test_suite = True
 
     def run_tests(self):
-        #import here, cause outside the eggs aren't loaded
         import pytest
         errno = pytest.main('rhcephcompose/tests ' + self.pytest_args)
         sys.exit(errno)
 
 setup(
-    name             = 'rhcephcompose',
-    description      = 'Distribution compose tool',
-    packages         = ['rhcephcompose'],
-    author           = 'Ken Dreyer',
-    author_email     = 'kdreyer [at] redhat.com',
-    version          = version,
-    license          = 'MIT',
-    zip_safe         = False,
-    keywords         = 'compose, distill, pungi',
-    long_description = LONG_DESCRIPTION,
-    scripts          = ['bin/rhcephcompose'],
+    name='rhcephcompose',
+    description='Distribution compose tool',
+    packages=['rhcephcompose'],
+    author='Ken Dreyer',
+    author_email='kdreyer [at] redhat.com',
+    version=version,
+    license='MIT',
+    zip_safe=False,
+    keywords='compose, distill, pungi',
+    long_description=LONG_DESCRIPTION,
+    scripts=['bin/rhcephcompose'],
     install_requires=[
         'kobo',
         'requests',
