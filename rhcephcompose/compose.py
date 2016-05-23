@@ -1,6 +1,7 @@
 import glob
 import os
-from rhcephcompose import Build, Comps, Variants, log
+from rhcephcompose import Build, Comps, Variants
+from rhcephcompose.log import log
 from shutil import copy
 import subprocess
 import textwrap
