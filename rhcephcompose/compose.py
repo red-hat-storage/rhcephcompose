@@ -111,7 +111,7 @@ class Compose(object):
                     copy(f, self.output_dir)
             # For "file" type extra files, copy the file from the user's cwd.
             if 'file' in extra_file:
-                copy(extra_file['file'], self.output_dir)
+                copy(os.path.join('extra_files', extra_file['file']), self.output_dir)
 
     def run_distro(self, distro):
         """ Execute a compose for a distro. """
