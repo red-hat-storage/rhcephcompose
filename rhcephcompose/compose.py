@@ -1,3 +1,4 @@
+import errno
 import glob
 import os
 from rhcephcompose import Build, Comps, Variants
@@ -113,6 +114,23 @@ class Compose(object):
             if 'file' in extra_file:
                 copy(os.path.join('extra_files', extra_file['file']),
                      self.output_dir)
+
+    def symlink_latest(self):
+        """ Create the "latest" symlink for this output_dir. """
+        latest_tmpl = 'Ceph-{product_version}-{oslabel}-{arch}-latest'
+        latest_path = os.path.join(self.target, latest_tmpl.format(
+            product_version=self.product_version,
+            oslabel='Ubuntu',
+            arch='x86_64',
+        ))
+        try:
+            os.unlink(latest_path)
+        except OSError, e:
+            if e.errno != errno.ENOENT:
+                log.error('Problem deleting "latest" symlink')
+                raise SystemExit(e)
+        os.symlink(os.path.relpath(self.output_dir, start=self.target),
+                   latest_path)
 
     def run_distro(self, distro):
         """ Execute a compose for a distro. """

@@ -24,3 +24,11 @@ class TestCompose(object):
         compose_date = time.strftime('%Y%m%d')
         expected = 'trees/Ceph-2-Ubuntu-x86_64-%s.t.0' % compose_date
         assert c.output_dir == expected
+
+    def test_symlink_latest(self, tmpdir, monkeypatch):
+        monkeypatch.chdir(tmpdir)
+        c = Compose(self.conf)
+        os.makedirs(c.output_dir)
+        c.symlink_latest()
+        result = os.path.realpath('trees/Ceph-2-Ubuntu-x86_64-latest')
+        assert result == os.path.realpath(c.output_dir)
