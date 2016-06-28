@@ -115,6 +115,9 @@ class Compose(object):
                 copy(os.path.join('extra_files', extra_file['file']),
                      self.output_dir)
 
+        # create "latest" symlink
+        self.symlink_latest()
+
     def symlink_latest(self):
         """ Create the "latest" symlink for this output_dir. """
         latest_tmpl = 'Ceph-{product_version}-{oslabel}-{arch}-latest'
