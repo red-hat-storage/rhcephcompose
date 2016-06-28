@@ -20,7 +20,7 @@ class Comps(object):
         tree = ET.parse(filename)
         comps_root = tree.getroot()
 
-        for element in comps_root.iter('group'):
+        for element in comps_root.getiterator('group'):
             group = CompsGroup()
             for setting in element:
                 if setting.tag == 'id':
