@@ -46,6 +46,8 @@ class Compose(object):
         self.product_version = conf['product_version']
         # Extra files to put at the root of the compose
         self.extra_files = conf['extra_files']
+        # Whether sources composition should be skipped
+        self.include_sources = conf.get('include_sources', True)
 
     @property
     def output_dir(self):
@@ -88,8 +90,9 @@ class Compose(object):
         os.mkdir(self.output_dir)
 
         # Top-level "sources" directory, parallel to our output_dir.
-        sources_dir = self.output_dir + '-sources'
-        os.mkdir(sources_dir)
+        if self.include_sources:
+            sources_dir = self.output_dir + '-sources'
+            os.mkdir(sources_dir)
 
         # Run the steps for each distro.
         for distro in self.builds.keys():
@@ -138,9 +141,6 @@ class Compose(object):
     def run_distro(self, distro):
         """ Execute a compose for a distro. """
 
-        # Top-level "sources" directory, parallel to our output_dir.
-        sources_dir = self.output_dir + '-sources'
-
         # Read the "builds_path" text file for this distro. Create a list of
         # each line of this file.
         builds_path = self.builds[distro]
@@ -167,9 +167,12 @@ class Compose(object):
                 comps.assign_binary_to_groups(binary)
             # Download all the source artifacts for this build and put them in
             # the "sources" directory.
-            for source in build.sources:
-                source.download(cache_dir=self.cache_path,
-                                dest_dir=sources_dir)
+            if self.include_sources:
+                # Top-level "sources" directory, parallel to our output_dir.
+                sources_dir = self.output_dir + '-sources'
+                for source in build.sources:
+                    source.download(cache_dir=self.cache_path,
+                                    dest_dir=sources_dir)
 
         variants = Variants()
         variants.parse_file(self.variants_file)
