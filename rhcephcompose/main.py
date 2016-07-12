@@ -16,7 +16,7 @@ class RHCephCompose(object):
         parser.add_argument('--insecure', action='store_const', const=True,
                             default=False, help='skip SSL verification')
         parser.add_argument('--no-sources', action='store_const', const=True,
-                            default=False, help='skip sources directory generation')
+                            default=False, help='skip sources generation')
         args = parser.parse_args()
 
         conf = kobo.conf.PyConfigParser()
@@ -28,7 +28,7 @@ class RHCephCompose(object):
                 import InsecureRequestWarning
             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         if args.no_sources:
-            conf['no_sources'] = True
+            conf['include_sources'] = False
 
         compose = Compose(conf)
         compose.run()

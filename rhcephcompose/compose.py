@@ -47,7 +47,7 @@ class Compose(object):
         # Extra files to put at the root of the compose
         self.extra_files = conf['extra_files']
         # Whether sources composition should be skipped
-        self.no_sources = conf['no_sources']
+        self.include_sources = conf.get('include_sources', True)
 
     @property
     def output_dir(self):
@@ -90,7 +90,7 @@ class Compose(object):
         os.mkdir(self.output_dir)
 
         # Top-level "sources" directory, parallel to our output_dir.
-        if not self.no_sources:
+        if self.include_sources:
             sources_dir = self.output_dir + '-sources'
             os.mkdir(sources_dir)
 
@@ -167,7 +167,7 @@ class Compose(object):
                 comps.assign_binary_to_groups(binary)
             # Download all the source artifacts for this build and put them in
             # the "sources" directory.
-            if not self.no_sources:
+            if self.include_sources:
                 # Top-level "sources" directory, parallel to our output_dir.
                 sources_dir = self.output_dir + '-sources'
                 for source in build.sources:
