@@ -54,13 +54,13 @@ class Compose(object):
         """
         Use the same logic that pungi/compose.py uses in order come up with
         the name for the output directory. The name should be something
-        like "Ceph-1.3-Ubuntu-20160922.t.0-x86_64" to match what
+        like "RHCEPH-1.3-Ubuntu-20160922.t.0-x86_64" to match what
         distill/pungi creates.
         """
         if getattr(self, '_output_directory', None):
             return self._output_directory
         compose_date = time.strftime('%Y%m%d')
-        compose_name = 'Ceph-{product_version}-{oslabel}-{arch}-{compose_date}.t.{compose_respin}'  # NOQA
+        compose_name = 'RHCEPH-{product_version}-{oslabel}-{arch}-{compose_date}.t.{compose_respin}'  # NOQA
         compose_respin = 0
         while 1:
             output_dir = os.path.join(self.target, compose_name.format(
@@ -123,7 +123,7 @@ class Compose(object):
 
     def symlink_latest(self):
         """ Create the "latest" symlink for this output_dir. """
-        latest_tmpl = 'Ceph-{product_version}-{oslabel}-{arch}-latest'
+        latest_tmpl = 'RHCEPH-{product_version}-{oslabel}-{arch}-latest'
         latest_path = os.path.join(self.target, latest_tmpl.format(
             product_version=self.product_version,
             oslabel='Ubuntu',
