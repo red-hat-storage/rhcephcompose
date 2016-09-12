@@ -87,3 +87,15 @@ class BinaryArtifact(PackageArtifact):
         """ Return the name of a Debian build, eg "ruby-rkerberos" or "ceph".
         Corresponds to "project_name" in Chacra. """
         return self.name_version_re.match(self.filename).group(1)
+
+    @property
+    def dbg_parent(self):
+        """
+        If this is a -dbg package, return the name of the parent package.
+
+        For example, "rbd-mirror-dbg" would return "rbd-mirror".
+        If this is not a -dbg package, return None.
+        """
+        if not self.name.endswith('-dbg'):
+            return None
+        return self.name[:-4]
