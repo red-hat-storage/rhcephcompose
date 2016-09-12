@@ -57,6 +57,8 @@ class Compose(object):
         self.include_sources = conf.get('include_sources', True)
         # Compose type for output directory name
         self.compose_type = conf.get('compose_type', 'test')
+        # Whether -dbg composition should be included or skipped
+        self.include_dbg = conf.get('include_dbg', True)
 
     @property
     def output_dir(self):
@@ -99,6 +101,11 @@ class Compose(object):
 
         # Make top-level output directory for this compose.
         os.mkdir(self.output_dir)
+
+        # Top-level "dbg" directory, parallel to our output_dir.
+        if self.include_dbg:
+            dbg_dir = self.output_dir + '-dbg'
+            os.mkdir(dbg_dir)
 
         # Top-level "sources" directory, parallel to our output_dir.
         if self.include_sources:
@@ -176,6 +183,14 @@ class Compose(object):
             # Assign each binary to its respective comps group(s).
             for binary in build.binaries:
                 comps.assign_binary_to_groups(binary)
+            # Download the -dbg artifacts for this build and put them in
+            # the "dbg" directory.
+            if self.include_dbg:
+                dbg_dir = self.output_dir + '-dbg'
+                for binary in build.binaries:
+                    if comps.is_present(binary.dbg_parent):
+                        binary.download(cache_dir=self.cache_path,
+                                        dest_dir=dbg_dir)
             # Download all the source artifacts for this build and put them in
             # the "sources" directory.
             if self.include_sources:

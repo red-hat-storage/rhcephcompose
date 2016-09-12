@@ -42,3 +42,15 @@ class Comps(object):
                 msg = 'binary %s is in group %s, appending.'
                 log.info(msg % (binary.name, group.group_id))
                 group.binaries.append(binary)
+
+    def is_present(self, name):
+        """
+        Return True if this binary name is in any group.
+
+        Useful for checking if we need to handle a -dbg binary where we know
+        the parent package's name.
+        """
+        for group in self.groups.values():
+            if name in group:
+                return True
+        return False
