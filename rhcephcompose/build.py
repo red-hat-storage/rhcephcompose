@@ -47,11 +47,19 @@ class Build(object):
         for arch in ['noarch', 'amd64']:
             if arch not in build_data:
                 continue
+            # Load the binaries' metadata for this arch.
+            arch_url = posixpath.join(build_url, arch)
+            r = requests.get(arch_url, verify=self.ssl_verify)
+            r.raise_for_status()
+            arch_data = r.json()
             log.info('Arch "%s" has %d pkgs' % (arch, len(build_data[arch])))
             for binary in build_data[arch]:
                 log.info('Found "%s" binary package artifact' % binary)
                 binary_url = posixpath.join(build_url, arch, binary)
-                b = BinaryArtifact(url=binary_url, ssl_verify=self.ssl_verify)
+                binary_checksum = arch_data[binary]['checksum']
+                b = BinaryArtifact(url=binary_url,
+                                   checksum=binary_checksum,
+                                   ssl_verify=self.ssl_verify)
                 if b.name in whitelist:
                     log.info('"%s" is in whitelist, saving' % b.name)
                     # This package is listed in comps.xml, so we care
@@ -65,8 +73,16 @@ class Build(object):
             msg = 'Build "%s" has no source artifacts in chacra'
             log.error(msg % self.build_id)
             exit(1)
+        # Load the sources' metadata for this build.
+        source_url = posixpath.join(build_url, 'source')
+        r = requests.get(source_url, verify=self.ssl_verify)
+        r.raise_for_status()
+        source_data = r.json()
         for source in build_data['source']:
             log.info('Found "%s" source package artifact' % source)
             source_url = posixpath.join(build_url, 'source', source)
-            s = SourceArtifact(url=source_url, ssl_verify=self.ssl_verify)
+            source_checksum = source_data[source]['checksum']
+            s = SourceArtifact(url=source_url,
+                               checksum=source_checksum,
+                               ssl_verify=self.ssl_verify)
             self.sources.append(s)
