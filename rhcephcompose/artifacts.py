@@ -38,8 +38,8 @@ class PackageArtifact(object):
 
 class SourceArtifact(PackageArtifact):
     """ Source Artifact from chacra. """
-    def __init__(self, url, ssl_verify=True):
-        super(SourceArtifact, self).__init__(url=url, ssl_verify=ssl_verify)
+    def __init__(self, *args, **kwargs):
+        super(SourceArtifact, self).__init__(*args, **kwargs)
 
 
 class BinaryArtifact(PackageArtifact):
@@ -48,8 +48,8 @@ class BinaryArtifact(PackageArtifact):
     # Regex to parse the name and version of this binary.
     name_version_re = re.compile('^([^_]+)_([^_]+)')
 
-    def __init__(self, url, ssl_verify=True):
-        super(BinaryArtifact, self).__init__(url=url, ssl_verify=ssl_verify)
+    def __init__(self, *args, **kwargs):
+        super(BinaryArtifact, self).__init__(*args, **kwargs)
 
     @property
     def name(self):
