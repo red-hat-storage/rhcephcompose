@@ -4,6 +4,8 @@ python:
     - 2.6
     - 2.7
 install:
+    # Install old (pytest-)flake8 for py26
+  - "[ ${TRAVIS_PYTHON_VERSION:0:3} == 2.6 ] && pip install pytest-flake8==0.5 flake8==2.6.2 || :"
     # We have to upgrade pytest explicitly here due to the following:
     # * Travis CI's virtualenv already comes with pytest preinstalled.
     # * pytest-flake8 requires pytest>=2.8, and sometimes this requirement is
