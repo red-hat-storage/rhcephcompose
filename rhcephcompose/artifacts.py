@@ -13,6 +13,7 @@ class PackageArtifact(object):
         self.url = url
         self.checksum = checksum
         self.ssl_verify = ssl_verify
+        self.verified_caches = set()
 
     @property
     def filename(self):
@@ -20,12 +21,22 @@ class PackageArtifact(object):
         return os.path.basename(self.url)
 
     def verify_checksum(self, cache_file):
-        """ Verify this cached file's checksum against self.checksum. """
+        """
+        Verify this cached file's checksum against self.checksum.
+
+        Optimization: If this function has returned True for a particular
+        cache_file, we'll save that result and return it again, to save time
+        calculating the same cache_file checksum over and over.
+        """
+        if cache_file in self.verified_caches:
+            return True
         chsum = sha512()
         with open(cache_file, 'rb') as f:
             for chunk in iter(lambda: f.read(4096), b''):
                 chsum.update(chunk)
             digest = chsum.hexdigest()
+        if digest == self.checksum:
+            self.verified_caches.add(cache_file)
         return digest == self.checksum
 
     def download(self, cache_dir, dest_dir=None):
