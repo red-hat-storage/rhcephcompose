@@ -3,13 +3,14 @@ from rhcephcompose.artifacts import BinaryArtifact, SourceArtifact
 
 class TestArtifacts(object):
 
+    deb_url = 'http://chacra.example.com/mypackage_1.0-1.deb'
+    dsc_url = 'http://chacra.example.com/mypackage_1.0-1.dsc'
+
     def test_binary(self):
-        url = 'http://chacra.example.com/mypackage_1.0-1.deb'
-        b = BinaryArtifact(url=url, checksum=None)
+        b = BinaryArtifact(url=self.deb_url, checksum=None)
         assert b.filename == 'mypackage_1.0-1.deb'
         assert b.name == 'mypackage'
 
     def test_source(self):
-        url = 'http://chacra.example.com/mypackage_1.0-1.dsc'
-        b = SourceArtifact(url=url, checksum=None)
+        b = SourceArtifact(url=self.dsc_url, checksum=None)
         assert b.filename == 'mypackage_1.0-1.dsc'
