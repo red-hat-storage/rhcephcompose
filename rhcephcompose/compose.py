@@ -53,7 +53,7 @@ class Compose(object):
         self.product_version = conf['product_version']
         # Extra files to put at the root of the compose
         self.extra_files = conf['extra_files']
-        # Whether sources composition should be skipped
+        # Whether sources composition should be included or skipped
         self.include_sources = conf.get('include_sources', True)
         # Compose type for output directory name
         self.compose_type = conf.get('compose_type', 'test')
