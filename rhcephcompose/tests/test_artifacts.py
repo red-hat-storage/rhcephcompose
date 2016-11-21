@@ -40,6 +40,6 @@ class TestArtifacts(object):
 
     def test_dbg(self):
         url = 'http://chacra.example.com/mypackage-dbg_1.0-1.deb'
-        b = BinaryArtifact(url=url)
+        b = BinaryArtifact(url=url, checksum=None)
         assert b.name == 'mypackage-dbg'
         assert b.dbg_parent == 'mypackage'
