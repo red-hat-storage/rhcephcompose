@@ -81,4 +81,4 @@ class BinaryArtifact(PackageArtifact):
     def name(self):
         """ Return the name of a Debian build, eg "ruby-rkerberos" or "ceph".
         Corresponds to "project_name" in Chacra. """
-        return self.name_version_re.search(self.filename).group(1)
+        return self.name_version_re.match(self.filename).group(1)
