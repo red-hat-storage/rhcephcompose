@@ -22,13 +22,13 @@ class Build(object):
     def name(self):
         """ Return the name of a Debian build, eg "ruby-rkerberos" or "ceph".
         Corresponds to "project_name" in Chacra. """
-        return self.name_version_re.search(self.build_id).group(1)
+        return self.name_version_re.match(self.build_id).group(1)
 
     @property
     def version(self):
         """ Return version number (version+release) of a Debian build.
             Corresponds to "version" in Chacra. """
-        return self.name_version_re.search(self.build_id).group(2)
+        return self.name_version_re.match(self.build_id).group(2)
 
     def get_chacra_build_url(self, chacra_url):
         """ Return a URL to this build's artifacts in chacra. """
