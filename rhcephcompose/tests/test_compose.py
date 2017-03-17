@@ -1,5 +1,7 @@
 import os
 import time
+import pytest
+from copy import copy
 from rhcephcompose.compose import Compose
 from kobo.conf import PyConfigParser
 
@@ -18,11 +20,20 @@ class TestCompose(object):
         assert isinstance(c, Compose)
         assert c.target == 'trees'
 
-    def test_output_dir(self, tmpdir, monkeypatch):
+    @pytest.mark.parametrize('compose_type,suffix', [
+        ('production', ''),
+        ('nightly', '.n'),
+        ('test', '.t'),
+        ('ci', '.ci'),
+    ])
+    def test_output_dir(self, tmpdir, monkeypatch, compose_type, suffix):
         monkeypatch.chdir(tmpdir)
-        c = Compose(self.conf)
+        conf = copy(self.conf)
+        conf['compose_type'] = compose_type
+        c = Compose(conf)
         compose_date = time.strftime('%Y%m%d')
-        expected = 'trees/Ceph-2-Ubuntu-x86_64-%s.t.0' % compose_date
+        expected = 'trees/Ceph-2-Ubuntu-x86_64-{0}{1}.0'.format(
+            compose_date, suffix)
         assert c.output_dir == expected
 
     def test_symlink_latest(self, tmpdir, monkeypatch):

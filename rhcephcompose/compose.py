@@ -8,6 +8,13 @@ import subprocess
 import textwrap
 import time
 
+COMPOSE_TYPE_MAP = {
+    'production': '',
+    'nightly': '.n',
+    'test': '.t',
+    'ci': '.ci',
+}
+
 
 class Compose(object):
     """
@@ -48,6 +55,8 @@ class Compose(object):
         self.extra_files = conf['extra_files']
         # Whether sources composition should be skipped
         self.include_sources = conf.get('include_sources', True)
+        # Compose type for output directory name
+        self.compose_type = conf.get('compose_type', 'test')
 
     @property
     def output_dir(self):
@@ -60,7 +69,8 @@ class Compose(object):
         if getattr(self, '_output_directory', None):
             return self._output_directory
         compose_date = time.strftime('%Y%m%d')
-        compose_name = 'Ceph-{product_version}-{oslabel}-{arch}-{compose_date}.t.{compose_respin}'  # NOQA
+        compose_name = 'Ceph-{product_version}-{oslabel}-{arch}-{compose_date}{compose_type}.{compose_respin}'  # NOQA
+        compose_type = COMPOSE_TYPE_MAP[self.compose_type]
         compose_respin = 0
         while 1:
             output_dir = os.path.join(self.target, compose_name.format(
@@ -68,6 +78,7 @@ class Compose(object):
                 oslabel='Ubuntu',
                 compose_date=compose_date,
                 arch='x86_64',
+                compose_type=compose_type,
                 compose_respin=compose_respin
             ))
             if os.path.isdir(output_dir):
