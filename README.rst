@@ -56,6 +56,21 @@ ended up keeping "ceph-1.2-rhel-6" and "ceph-1.2-rhel-7" identical, and it was
 a pain to do that manually. As described above, I also keep all the builds
 "combined" within Chacra.
 
+Caching
+-------
+
+To save time when accessing chacra, rhcephcompose downloads all build
+artifacts to a local cache by default. This cache location is
+``$XDG_CACHE_HOME/rhcephcompose/``. If the ``XDG_CACHE_HOME`` environment
+variable is unset, rhcephcompose defaults this to ``~/.cache`` (so builds are
+written to ``~/.cache/rhcephcompose``).
+
+rhcephcompose never evicts items from this cache so it can grow without bound.
+It's a good idea to clean it out occasionally. If you are running
+rhcephcompose with Jenkins, you can do this automatically by setting
+``$XDG_CACHE_HOME`` to a location within the job's workspace, and then have
+Jenkins simply clean up the workspace.
+
 SSL errors
 ----------
 
