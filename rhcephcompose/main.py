@@ -28,8 +28,7 @@ class RHCephCompose(object):
             from requests.packages.urllib3.exceptions\
                 import InsecureRequestWarning
             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-        if args.compose_type:
-            conf['compose_type'] = args.compose_type
+        conf['compose_type'] = args.compose_type
 
         compose = Compose(conf)
         compose.run()
