@@ -20,7 +20,7 @@ class TestCompose(object):
         assert isinstance(c, Compose)
         assert c.target == 'trees'
 
-    @pytest.mark.parametrize('compose_type,suffix', [
+    @pytest.mark.parametrize(('compose_type', 'suffix'), [
         ('production', ''),
         ('nightly', '.n'),
         ('test', '.t'),
