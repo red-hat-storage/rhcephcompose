@@ -142,7 +142,7 @@ class Compose(object):
         ))
         try:
             os.unlink(latest_path)
-        except OSError, e:
+        except OSError as e:
             if e.errno != errno.ENOENT:
                 log.error('Problem deleting "latest" symlink')
                 raise SystemExit(e)
