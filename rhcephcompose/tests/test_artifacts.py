@@ -18,7 +18,7 @@ class TestArtifacts(object):
     def test_verify_checksum(self, tmpdir):
         cache_file = tmpdir.join('mypackage_1.0-1.deb')
         try:
-            cache_file.write_binary('testpackagecontents')
+            cache_file.write_binary(b'testpackagecontents')
         except AttributeError:
             # python-py < v1.4.24 does not support write_binary()
             cache_file.write('testpackagecontents')
@@ -29,7 +29,7 @@ class TestArtifacts(object):
     def test_verify_checksum_failure(self, tmpdir):
         cache_file = tmpdir.join('mypackage_1.0-1.deb')
         try:
-            cache_file.write_binary('testpackagecontents')
+            cache_file.write_binary(b'testpackagecontents')
         except AttributeError:
             # python-py < v1.4.24 does not support write_binary()
             cache_file.write('testpackagecontents')
