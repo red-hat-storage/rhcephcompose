@@ -43,3 +43,25 @@ class TestCompose(object):
         c.symlink_latest()
         result = os.path.realpath('trees/Ceph-2-Ubuntu-x86_64-latest')
         assert result == os.path.realpath(c.output_dir)
+
+    def test_create_repo(self, tmpdir, monkeypatch):
+        monkeypatch.chdir(tmpdir)
+        c = Compose(self.conf)
+        # TODO: use real list of binaries here
+        c.create_repo(str(tmpdir), 'xenial', [])
+        distributions_path = tmpdir.join('conf/distributions')
+        assert distributions_path.exists()
+
+        expected = '''\
+Codename: xenial
+Suite: stable
+Components: main
+Architectures: amd64 i386
+Origin: Red Hat, Inc.
+Description: Ceph distributed file system
+DebIndices: Packages Release . .gz .bz2
+DscIndices: Sources Release .gz .bz2
+Contents: .gz .bz2
+
+'''
+        assert distributions_path.read() == expected

@@ -203,46 +203,49 @@ class Compose(object):
         variants = Variants()
         variants.parse_file(self.variants_file)
 
-        for variant_id, variant_groups in variants.items():
-            # Top-level directory for this repository:
-            variant_dir = os.path.join(self.output_dir, variant_id)
-            if not os.path.isdir(variant_dir):
-                os.mkdir(variant_dir)
+        # Create a repository for each variant.
+        for variant_id, groups in variants.items():
+            repo_path = os.path.join(self.output_dir, variant_id)
+            binaries = set()
+            for group_id in groups:
+                to_add = comps.groups[group_id].binaries
+                log.info('Adding %d binaries from comps ID %s to variant %s' %
+                         (len(to_add), group_id, variant_id))
+                binaries.update(to_add)
+            self.create_repo(repo_path, distro, binaries)
 
-            # Set up the reprepro configuration:
-            log.info('Creating reprepro configuration for %s' % variant_id)
-            conf_dir = os.path.join(variant_dir, 'conf')
-            if not os.path.isdir(conf_dir):
-                os.mkdir(conf_dir)
-            distributions_path = os.path.join(conf_dir, 'distributions')
-            dist_template = textwrap.dedent('''\
-                Codename: {codename}
-                Suite: stable
-                Components: main
-                Architectures: amd64 i386
-                Origin: Red Hat, Inc.
-                Description: Ceph distributed file system
-                DebIndices: Packages Release . .gz .bz2
-                DscIndices: Sources Release .gz .bz2
-                Contents: .gz .bz2
+    def create_repo(self, repo_path, distro, binaries):
+        """ Create a repository at repo_path. """
+        # Top-level directory for this (variant) repository:
+        if not os.path.isdir(repo_path):
+            os.mkdir(repo_path)
 
-            ''')
-            with open(distributions_path, 'a') as dist_conf_file:
-                dist_conf_file.write(dist_template.format(codename=distro))
+        # Set up the reprepro configuration:
+        log.info('Creating reprepro configuration for %s' % repo_path)
+        conf_dir = os.path.join(repo_path, 'conf')
+        if not os.path.isdir(conf_dir):
+            os.mkdir(conf_dir)
+        distributions_path = os.path.join(conf_dir, 'distributions')
+        dist_template = textwrap.dedent('''\
+            Codename: {codename}
+            Suite: stable
+            Components: main
+            Architectures: amd64 i386
+            Origin: Red Hat, Inc.
+            Description: Ceph distributed file system
+            DebIndices: Packages Release . .gz .bz2
+            DscIndices: Sources Release .gz .bz2
+            Contents: .gz .bz2
 
-            # Loop through all the comps groups in this variant. (in Ceph we
-            # only have one group per variant, so far!)
-            for group_id in variant_groups:
-                # Loop through all the binaries in this comps group
-                binaries = comps.groups[group_id].binaries
-                msg = 'Comps group ID "%s" contains %d binaries %s'
-                msg_binaries = list(map(lambda x: x.filename, binaries))
-                log.info(msg % (group_id, len(binaries), msg_binaries))
-                for binary in binaries:
-                    # Add this binary to our variant's repo/directory:
-                    self.add_binary_to_repo(binary=binary,
-                                            repo_path=variant_dir,
-                                            distro=distro)
+        ''')
+        with open(distributions_path, 'a') as dist_conf_file:
+            dist_conf_file.write(dist_template.format(codename=distro))
+
+        for binary in binaries:
+            # Add this binary to our variant's repo/directory:
+            self.add_binary_to_repo(binary=binary,
+                                    repo_path=repo_path,
+                                    distro=distro)
 
     def add_binary_to_repo(self, binary, repo_path, distro):
         """ Add a binary (.deb) to a Debian repository. """
