@@ -172,8 +172,10 @@ class Compose(object):
         comps = Comps()
         comps.parse_file(comps_file)
 
-        # Copy the builds' files to the correct directories, according to
+        # Assign the builds' files to the correct groups, according to
         # comps.xml + variants.xml.
+
+        dbg_binaries = set()
 
         for build_id in builds:
             build = Build(build_id, ssl_verify=self.chacra_ssl_verify)
@@ -183,14 +185,9 @@ class Compose(object):
             # Assign each binary to its respective comps group(s).
             for binary in build.binaries:
                 comps.assign_binary_to_groups(binary)
-            # Download the -dbg artifacts for this build and put them in
-            # the "dbg" directory.
-            if self.include_dbg:
-                dbg_dir = self.output_dir + '-dbg'
-                for binary in build.binaries:
-                    if comps.is_present(binary.dbg_parent):
-                        binary.download(cache_dir=self.cache_path,
-                                        dest_dir=dbg_dir)
+                # And track all dbg binaries.
+                if comps.is_present(binary.dbg_parent):
+                    dbg_binaries.add(binary)
             # Download all the source artifacts for this build and put them in
             # the "sources" directory.
             if self.include_sources:
@@ -213,6 +210,11 @@ class Compose(object):
                          (len(to_add), group_id, variant_id))
                 binaries.update(to_add)
             self.create_repo(repo_path, distro, binaries)
+
+        # Create dbg repository.
+        if self.include_dbg:
+            dbg_path = self.output_dir + '-dbg'
+            self.create_repo(dbg_path, distro, dbg_binaries)
 
     def create_repo(self, repo_path, distro, binaries):
         """ Create a repository at repo_path. """
