@@ -11,6 +11,8 @@ class TestArtifacts(object):
         assert b.filename == 'mypackage_1.0-1.deb'
         assert b.name == 'mypackage'
         assert b.dbg_parent is None
+        expected_repr = 'BinaryArtifact(url=%s, checksum=None)' % self.deb_url
+        assert repr(b) == expected_repr
 
     def test_source(self):
         b = SourceArtifact(url=self.dsc_url, checksum=None)

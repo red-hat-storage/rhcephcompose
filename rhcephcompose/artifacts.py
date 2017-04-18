@@ -66,6 +66,10 @@ class PackageArtifact(object):
         if dest_dir is not None:
             copy(cache_dest, dest_dir)
 
+    def __repr__(self):
+        return '%s(url=%s, checksum=%s)' % (self.__class__.__name__,
+                                            self.url, self.checksum)
+
 
 class SourceArtifact(PackageArtifact):
     """ Source Artifact from chacra. """
