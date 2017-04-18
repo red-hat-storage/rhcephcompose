@@ -10,6 +10,7 @@ class TestArtifacts(object):
         b = BinaryArtifact(url=self.deb_url, checksum=None)
         assert b.filename == 'mypackage_1.0-1.deb'
         assert b.name == 'mypackage'
+        assert b.dbg_parent is None
 
     def test_source(self):
         b = SourceArtifact(url=self.dsc_url, checksum=None)
@@ -36,3 +37,9 @@ class TestArtifacts(object):
         checksum = 'INCORRECTSHA256HASH'
         b = BinaryArtifact(url=self.deb_url, checksum=checksum)
         assert b.verify_checksum(str(cache_file)) is False
+
+    def test_dbg(self):
+        url = 'http://chacra.example.com/mypackage-dbg_1.0-1.deb'
+        b = BinaryArtifact(url=url, checksum=None)
+        assert b.name == 'mypackage-dbg'
+        assert b.dbg_parent == 'mypackage'

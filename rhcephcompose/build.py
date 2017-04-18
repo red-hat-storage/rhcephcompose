@@ -65,6 +65,12 @@ class Build(object):
                     # This package is listed in comps.xml, so we care
                     # about this one. Save it in the lookaside cache.
                     self.binaries.append(b)
+                if b.dbg_parent is not None and b.dbg_parent in whitelist:
+                    log.info('"%s" parent is in whitelist, saving' % b.name)
+                    # This package is a -dbg package, and its parent is listed
+                    # in comps.xml, so we care about this one. Save it in the
+                    # lookaside cache.
+                    self.binaries.append(b)
                 else:
                     # This package is not listed in comps.xml. Skip it.
                     log.info('"%s" pkg not whitelisted, skipping' % b.name)
