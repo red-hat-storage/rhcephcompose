@@ -2,6 +2,9 @@ import os
 import re
 import sys
 import subprocess
+from setuptools.command.test import test as TestCommand
+from setuptools import setup, Command
+
 
 readme = os.path.join(os.path.dirname(__file__), 'README.rst')
 LONG_DESCRIPTION = open(readme).read()
@@ -9,9 +12,6 @@ LONG_DESCRIPTION = open(readme).read()
 module_file = open('rhcephcompose/__init__.py').read()
 metadata = dict(re.findall("__([a-z]+)__\s*=\s*'([^']+)'", module_file))
 version = metadata['version']
-
-from setuptools.command.test import test as TestCommand
-from setuptools import setup, Command
 
 
 class ReleaseCommand(Command):
