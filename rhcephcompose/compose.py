@@ -60,6 +60,32 @@ class Compose(object):
         # Whether -dbg composition should be included or skipped
         self.include_dbg = conf.get('include_dbg', True)
 
+    def validate(self):
+        """
+        Sanity-check that files exist before we go to the work of running.
+        """
+        # builds lists
+        if len(self.builds) < 1:
+            raise RuntimeError('No builds files in config')
+        for builds_file in self.builds.values():
+            if not os.access(builds_file, os.R_OK):
+                raise RuntimeError('Unreadable builds file %s' % builds_file)
+        # comps XML
+        for comps_file in self.comps.values():
+            if not os.access(comps_file, os.R_OK):
+                raise RuntimeError('Unreadable comps file %s' % comps_file)
+        # variants XML
+        if not os.access(self.variants_file, os.R_OK):
+            raise RuntimeError('Unreadable variants file %s' %
+                               self.variants_file)
+        # extra_files
+        for extra_file in self.extra_files:
+            # For "file" type extra files, we expect it in the user's cwd.
+            if 'file' in extra_file:
+                src = os.path.join('extra_files', extra_file['file'])
+                if not os.access(src, os.R_OK):
+                    raise RuntimeError('Unreadable extra file %s' % src)
+
     @property
     def output_dir(self):
         """
@@ -93,6 +119,8 @@ class Compose(object):
 
     def run(self):
         """ High-level function to execute a compose. """
+        self.validate()
+
         if not os.path.isdir(self.cache_path):
             os.makedirs(self.cache_path)
 
