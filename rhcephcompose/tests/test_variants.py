@@ -1,9 +1,6 @@
 import os
 from rhcephcompose.variants import Variants
 
-TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
-FIXTURES_DIR = os.path.join(TESTS_DIR, 'fixtures')
-
 
 class TestVariants(object):
 
@@ -11,9 +8,9 @@ class TestVariants(object):
         v = Variants()
         assert v == {}
 
-    def test_parse_basic_file(self):
+    def test_parse_basic_file(self, fixtures_dir):
         v = Variants()
-        fixture_file = os.path.join(FIXTURES_DIR, 'variants-basic.xml')
+        fixture_file = os.path.join(fixtures_dir, 'variants-basic.xml')
         v.parse_file(fixture_file)
         assert 'Tools' in v
         # Test that the "Tools" variant contains the "ceph-tools" comps group.
