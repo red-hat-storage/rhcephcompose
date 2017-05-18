@@ -85,9 +85,19 @@ class Compose(object):
     def validate_builds_lists(self):
         if len(self.builds) < 1:
             raise RuntimeError('No builds files in config')
-        for builds_file in self.builds.values():
-            if not os.access(builds_file, os.R_OK):
-                raise RuntimeError('Unreadable builds file %s' % builds_file)
+        distros = self.builds.keys()
+        for distro, filename in self.builds.items():
+            if not os.access(filename, os.R_OK):
+                raise RuntimeError('Unreadable builds file %s' % filename)
+            # Sanity-check the build NVRs for any mention of other_distros.
+            builds = [line.rstrip('\n') for line in open(filename)]
+            other_distros = [d for d in distros if d != distro]
+            for build in builds:
+                for bad_distro in other_distros:
+                    if bad_distro in build:
+                        msg = '%s build %s in file %s' % (bad_distro, build,
+                                                          filename)
+                        raise RuntimeError(msg)
 
     @property
     def output_dir(self):
