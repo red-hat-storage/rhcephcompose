@@ -65,11 +65,7 @@ class Compose(object):
         Sanity-check that files exist before we go to the work of running.
         """
         # builds lists
-        if len(self.builds) < 1:
-            raise RuntimeError('No builds files in config')
-        for builds_file in self.builds.values():
-            if not os.access(builds_file, os.R_OK):
-                raise RuntimeError('Unreadable builds file %s' % builds_file)
+        self.validate_builds_lists()
         # comps XML
         for comps_file in self.comps.values():
             if not os.access(comps_file, os.R_OK):
@@ -85,6 +81,13 @@ class Compose(object):
                 src = os.path.join('extra_files', extra_file['file'])
                 if not os.access(src, os.R_OK):
                     raise RuntimeError('Unreadable extra file %s' % src)
+
+    def validate_builds_lists(self):
+        if len(self.builds) < 1:
+            raise RuntimeError('No builds files in config')
+        for builds_file in self.builds.values():
+            if not os.access(builds_file, os.R_OK):
+                raise RuntimeError('Unreadable builds file %s' % builds_file)
 
     @property
     def output_dir(self):
