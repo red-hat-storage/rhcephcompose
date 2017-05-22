@@ -50,7 +50,7 @@ class TestCompose(object):
         # TODO: use real list of binaries here
         c.create_repo(str(tmpdir), 'xenial', [])
         distributions_path = tmpdir.join('conf/distributions')
-        assert distributions_path.exists()
+        assert distributions_path.check(file=True)
 
         expected = '''\
 Codename: xenial
