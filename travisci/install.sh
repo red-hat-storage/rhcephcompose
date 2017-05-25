@@ -16,3 +16,5 @@ fi
 if [ ${TRAVIS_PYTHON_VERSION:0:3} != 2.6 ]; then
   pip install pytest-flake8
 fi
+
+pip install pytest-cov python-coveralls

@@ -8,4 +8,6 @@ install:
   - ./travisci/install.sh
 script:
   - ./travisci/run.sh
+after_success:
+  - coveralls
 cache: pip
