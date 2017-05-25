@@ -41,3 +41,10 @@ class TestMain(object):
             'variants_file': 'variants-basic.xml'
         }
         assert recorder.conf == expected
+
+    def test_insecure(self, conf, monkeypatch):
+        monkeypatch.setattr(sys, 'argv', ['rhcephcompose', '--insecure', conf])
+        recorder = ComposeRecorder()
+        monkeypatch.setattr(main, 'Compose', recorder)
+        main.RHCephCompose()
+        assert recorder.conf['chacra_ssl_verify'] is False
