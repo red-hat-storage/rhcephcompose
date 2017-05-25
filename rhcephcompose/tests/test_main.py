@@ -1,6 +1,12 @@
 import os
 import sys
 from rhcephcompose import main
+import pytest
+
+
+@pytest.fixture
+def conf(fixtures_dir):
+    return os.path.join(fixtures_dir, 'basic.conf')
 
 
 class FakeCompose(object):
@@ -17,8 +23,7 @@ class ComposeRecorder(object):
 
 class TestMain(object):
 
-    def test_constructor(self, fixtures_dir, monkeypatch):
-        conf = os.path.join(fixtures_dir, 'basic.conf')
+    def test_constructor(self, conf, monkeypatch):
         monkeypatch.setattr(sys, 'argv', ['rhcephcompose', conf])
         recorder = ComposeRecorder()
         monkeypatch.setattr(main, 'Compose', recorder)
