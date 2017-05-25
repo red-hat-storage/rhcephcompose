@@ -1,7 +1,18 @@
 import os
 import sys
 from rhcephcompose import main
-from rhcephcompose.compose import Compose
+
+
+class FakeCompose(object):
+    def run(self):
+        pass
+
+
+class ComposeRecorder(object):
+    """ Record the arg to the Compose object's constructor. """
+    def __call__(self, conf):
+        self.conf = conf
+        return FakeCompose()
 
 
 class TestMain(object):
@@ -9,5 +20,19 @@ class TestMain(object):
     def test_constructor(self, fixtures_dir, monkeypatch):
         conf = os.path.join(fixtures_dir, 'basic.conf')
         monkeypatch.setattr(sys, 'argv', ['rhcephcompose', conf])
-        monkeypatch.setattr(Compose, 'run', lambda x: None)
+        recorder = ComposeRecorder()
+        monkeypatch.setattr(main, 'Compose', recorder)
         main.RHCephCompose()
+        expected = {
+            'builds': {'trusty': 'builds-ceph-2.0-trusty.txt',
+                       'xenial': 'builds-ceph-2.0-xenial.txt'},
+            'chacra_url': 'https://chacra.example.com/',
+            'compose_type': 'test',
+            'comps': {'trusty': 'comps-basic.xml'},
+            'extra_files': [{'file': 'README'}, {'file': 'EULA'},
+                            {'file': 'GPL'}],
+            'product_version': '2',
+            'target': 'trees',
+            'variants_file': 'variants-basic.xml'
+        }
+        assert recorder.conf == expected
