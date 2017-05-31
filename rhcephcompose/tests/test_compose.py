@@ -126,3 +126,13 @@ class TestComposeValidate(object):
         c.builds['xenial'] = c.builds['trusty']
         with pytest.raises(RuntimeError):
             c.validate()
+
+
+class TestComposeReleaseVersion(object):
+
+    def test_product_version_fallback(self, conf, tmpdir, monkeypatch):
+        monkeypatch.chdir(tmpdir)
+        del conf['release_version']
+        conf['product_version'] = '3'
+        c = Compose(conf)
+        assert c.release_version == '3'

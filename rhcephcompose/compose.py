@@ -49,8 +49,12 @@ class Compose(object):
         self.cache_path = os.path.join(xdg_cache_home, 'rhcephcompose')
         # Output target directory
         self.target = conf['target']
-        # Product version, eg "1.3"
-        self.product_version = conf['product_version']
+        # Release version, eg "1.3"
+        try:
+            self.release_version = conf['release_version']
+        except KeyError:
+            # backwards compatibility option for old configurations
+            self.release_version = conf['product_version']
         # Extra files to put at the root of the compose
         self.extra_files = conf['extra_files']
         # Whether sources composition should be included or skipped
@@ -110,12 +114,12 @@ class Compose(object):
         if getattr(self, '_output_directory', None):
             return self._output_directory
         compose_date = time.strftime('%Y%m%d')
-        compose_name = 'Ceph-{product_version}-{oslabel}-{arch}-{compose_date}{compose_type}.{compose_respin}'  # NOQA
+        compose_name = 'Ceph-{release_version}-{oslabel}-{arch}-{compose_date}{compose_type}.{compose_respin}'  # NOQA
         compose_type = COMPOSE_TYPE_MAP[self.compose_type]
         compose_respin = 0
         while 1:
             output_dir = os.path.join(self.target, compose_name.format(
-                product_version=self.product_version,
+                release_version=self.release_version,
                 oslabel='Ubuntu',
                 compose_date=compose_date,
                 arch='x86_64',
@@ -182,9 +186,9 @@ class Compose(object):
 
     def symlink_latest(self):
         """ Create the "latest" symlink for this output_dir. """
-        latest_tmpl = 'Ceph-{product_version}-{oslabel}-{arch}-latest'
+        latest_tmpl = 'Ceph-{release_version}-{oslabel}-{arch}-latest'
         latest_path = os.path.join(self.target, latest_tmpl.format(
-            product_version=self.product_version,
+            release_version=self.release_version,
             oslabel='Ubuntu',
             arch='x86_64',
         ))
