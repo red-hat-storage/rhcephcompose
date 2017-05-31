@@ -10,10 +10,10 @@
 A tool to gather build artifacts and assemble them into a set of repositories.
 
 ``rhcephcompose`` is a distribution compose tool, similar to Red Hat's `Pungi
-<https://pagure.io/pungi/>`_ (open-source) or Distill (closed-source). In
-contrast to simply throwing all builds together into a single package
-repository, these tools give the user fine-grained control over the selection
-of builds and the layout of the final product's output.
+<https://pagure.io/pungi/>`_ (open-source). In contrast to simply throwing all
+builds together into a single package repository, these tools give the user
+fine-grained control over the selection of builds and the layout of the final
+product's output.
 
 Composes are release snapshots that contain release deliverables such as
 installation trees with RPMs and Yum repodata. ``rhcephcompose`` creates an
@@ -26,7 +26,7 @@ See Also
 * ``rhcephcompose`` interacts with a `Chacra
   <https://pypi.python.org/pypi/merfi>`_ instance. It queries Chacra's
   API for build information and downloads build artifacts stored in Chacra.
-  (This is a bit similar to the way Pungi and Distill interact with Koji.)
+  (This is a bit similar to the way Pungi interacts with Koji.)
 
 * After creating a compose, you may wish to GPG-sign it with `Merfi
   <https://pypi.python.org/pypi/merfi>`_.

@@ -73,7 +73,7 @@ setup(
     version=version,
     license='MIT',
     zip_safe=False,
-    keywords='compose, distill, pungi',
+    keywords='compose, pungi',
     long_description=LONG_DESCRIPTION,
     scripts=['bin/rhcephcompose'],
     install_requires=[

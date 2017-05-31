@@ -33,7 +33,7 @@ class Compose(object):
         # In Pungi terminology, assume gather_source "comps" (see also
         # Pungi's "comps_file".)
         self.comps = conf['comps']
-        # Variants file copied directly from what we use with Distill on
+        # Variants file copied directly from what we use with Pungi on
         # RHEL.
         self.variants_file = conf['variants_file']
         # In Pungi terminology, assume pkgset_source "chacra" (instead
@@ -105,7 +105,7 @@ class Compose(object):
         Use the same logic that pungi/compose.py uses in order come up with
         the name for the output directory. The name should be something
         like "Ceph-1.3-Ubuntu-20160922.t.0-x86_64" to match what
-        distill/pungi creates.
+        Pungi creates.
         """
         if getattr(self, '_output_directory', None):
             return self._output_directory
@@ -207,7 +207,7 @@ class Compose(object):
 
         log.info('Found %d build ids in "%s"' % (len(builds), builds_path))
 
-        # Read pkg mappings from Distill-style comps XML.
+        # Read pkg mappings from Pungi-style comps XML.
         # (Assembles a master list of package names that we will need.)
         comps_file = self.comps[distro]
         comps = Comps()
