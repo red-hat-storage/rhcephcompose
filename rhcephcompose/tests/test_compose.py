@@ -32,7 +32,7 @@ class TestCompose(object):
         conf['compose_type'] = compose_type
         c = Compose(conf)
         compose_date = time.strftime('%Y%m%d')
-        expected = 'trees/Ceph-2-Ubuntu-x86_64-{0}{1}.0'.format(
+        expected = 'trees/RHCEPH-2-Ubuntu-x86_64-{0}{1}.0'.format(
             compose_date, suffix)
         assert c.output_dir == expected
 
@@ -41,7 +41,7 @@ class TestCompose(object):
         c = Compose(conf)
         os.makedirs(c.output_dir)
         c.symlink_latest()
-        result = os.path.realpath('trees/Ceph-2-Ubuntu-x86_64-latest')
+        result = os.path.realpath('trees/RHCEPH-2-Ubuntu-x86_64-latest')
         assert result == os.path.realpath(c.output_dir)
 
     def test_create_repo(self, conf, tmpdir, monkeypatch):
@@ -136,3 +136,26 @@ class TestComposeReleaseVersion(object):
         conf['product_version'] = '3'
         c = Compose(conf)
         assert c.release_version == '3'
+
+
+class TestComposeReleaseShort(object):
+
+    @pytest.fixture
+    def newconf(self, conf):
+        conf['release_short'] = 'FOOPRODUCT'
+        return conf
+
+    def test_output_dir(self, newconf, tmpdir, monkeypatch):
+        monkeypatch.chdir(tmpdir)
+        c = Compose(newconf)
+        compose_date = time.strftime('%Y%m%d')
+        expected = 'trees/FOOPRODUCT-2-Ubuntu-x86_64-%s.t.0' % compose_date
+        assert c.output_dir == expected
+
+    def test_symlink_latest(self, newconf, tmpdir, monkeypatch):
+        monkeypatch.chdir(tmpdir)
+        c = Compose(newconf)
+        os.makedirs(c.output_dir)
+        c.symlink_latest()
+        result = os.path.realpath('trees/FOOPRODUCT-2-Ubuntu-x86_64-latest')
+        assert result == os.path.realpath(c.output_dir)

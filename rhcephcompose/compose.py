@@ -49,6 +49,8 @@ class Compose(object):
         self.cache_path = os.path.join(xdg_cache_home, 'rhcephcompose')
         # Output target directory
         self.target = conf['target']
+        # Short name, eg "RHCEPH"
+        self.release_short = conf['release_short']
         # Release version, eg "1.3"
         try:
             self.release_version = conf['release_version']
@@ -114,11 +116,12 @@ class Compose(object):
         if getattr(self, '_output_directory', None):
             return self._output_directory
         compose_date = time.strftime('%Y%m%d')
-        compose_name = 'Ceph-{release_version}-{oslabel}-{arch}-{compose_date}{compose_type}.{compose_respin}'  # NOQA
+        compose_name = '{release_short}-{release_version}-{oslabel}-{arch}-{compose_date}{compose_type}.{compose_respin}'  # NOQA
         compose_type = COMPOSE_TYPE_MAP[self.compose_type]
         compose_respin = 0
         while 1:
             output_dir = os.path.join(self.target, compose_name.format(
+                release_short=self.release_short,
                 release_version=self.release_version,
                 oslabel='Ubuntu',
                 compose_date=compose_date,
@@ -186,8 +189,9 @@ class Compose(object):
 
     def symlink_latest(self):
         """ Create the "latest" symlink for this output_dir. """
-        latest_tmpl = 'Ceph-{release_version}-{oslabel}-{arch}-latest'
-        latest_path = os.path.join(self.target, latest_tmpl.format(
+        tmpl = '{release_short}-{release_version}-{oslabel}-{arch}-latest'
+        latest_path = os.path.join(self.target, tmpl.format(
+            release_short=self.release_short,
             release_version=self.release_version,
             oslabel='Ubuntu',
             arch='x86_64',

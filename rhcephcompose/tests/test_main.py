@@ -36,6 +36,7 @@ class TestMain(object):
             'comps': {'trusty': 'comps-basic.xml'},
             'extra_files': [{'file': 'README'}, {'file': 'EULA'},
                             {'file': 'GPL'}],
+            'release_short': 'RHCEPH',
             'release_version': '2',
             'target': 'trees',
             'variants_file': 'variants-basic.xml'
