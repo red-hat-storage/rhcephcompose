@@ -37,7 +37,7 @@ class TestMain(object):
             'extra_files': [{'file': 'README'}, {'file': 'EULA'},
                             {'file': 'GPL'}],
             'release_short': 'RHCEPH',
-            'release_version': '2',
+            'release_version': '2.0',
             'target': 'trees',
             'variants_file': 'variants-basic.xml'
         }

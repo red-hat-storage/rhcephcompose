@@ -189,10 +189,11 @@ class Compose(object):
 
     @property
     def latest_name(self):
-        tmpl = '{release_short}-{release_version}-{oslabel}-{arch}-latest'
+        tmpl = '{release_short}-{major_version}-{oslabel}-{arch}-latest'
+        major_version = self.release_version.rsplit('.', 1)[0]
         return tmpl.format(
             release_short=self.release_short,
-            release_version=self.release_version,
+            major_version=major_version,
             oslabel='Ubuntu',
             arch='x86_64',
         )
