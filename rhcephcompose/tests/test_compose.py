@@ -36,6 +36,16 @@ class TestCompose(object):
             compose_date, suffix)
         assert c.output_dir == expected
 
+    @pytest.mark.parametrize(('release_version', 'expected'), [
+        ('2', 'RHCEPH-2-Ubuntu-x86_64-latest'),
+        ('2.0', 'RHCEPH-2.0-Ubuntu-x86_64-latest'),
+        ('2.0.0', 'RHCEPH-2.0.0-Ubuntu-x86_64-latest'),
+    ])
+    def test_latest_name(self, conf, release_version, expected):
+        conf['release_version'] = release_version
+        c = Compose(conf)
+        assert c.latest_name == expected
+
     def test_symlink_latest(self, conf, tmpdir, monkeypatch):
         monkeypatch.chdir(tmpdir)
         c = Compose(conf)

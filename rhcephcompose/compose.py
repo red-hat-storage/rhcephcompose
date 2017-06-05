@@ -187,15 +187,19 @@ class Compose(object):
         # create "latest" symlink
         self.symlink_latest()
 
-    def symlink_latest(self):
-        """ Create the "latest" symlink for this output_dir. """
+    @property
+    def latest_name(self):
         tmpl = '{release_short}-{release_version}-{oslabel}-{arch}-latest'
-        latest_path = os.path.join(self.target, tmpl.format(
+        return tmpl.format(
             release_short=self.release_short,
             release_version=self.release_version,
             oslabel='Ubuntu',
             arch='x86_64',
-        ))
+        )
+
+    def symlink_latest(self):
+        """ Create the "latest" symlink for this output_dir. """
+        latest_path = os.path.join(self.target, self.latest_name)
         try:
             os.unlink(latest_path)
         except OSError as e:
