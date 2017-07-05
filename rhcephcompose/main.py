@@ -5,6 +5,17 @@ import kobo.conf
 from rhcephcompose.compose import Compose
 
 
+def silence_insecure_warnings():
+    """ Silence modern requests' warnings about an insecure connection. """
+    import requests
+    try:
+        from requests.packages.urllib3.exceptions\
+            import InsecureRequestWarning
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+    except ImportError:
+        pass
+
+
 class RHCephCompose(object):
     """ Main class for rhcephcompose CLI. """
 
@@ -24,10 +35,7 @@ class RHCephCompose(object):
         conf.load_from_file(args.config_file)
         if args.insecure:
             conf['chacra_ssl_verify'] = False
-            import requests
-            from requests.packages.urllib3.exceptions\
-                import InsecureRequestWarning
-            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+            silence_insecure_warnings()
         conf['compose_type'] = args.compose_type
 
         compose = Compose(conf)
