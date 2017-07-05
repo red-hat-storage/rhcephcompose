@@ -69,7 +69,7 @@ setup(
     description='Distribution compose tool',
     packages=['rhcephcompose'],
     author='Ken Dreyer',
-    author_email='kdreyer [at] redhat.com',
+    author_email='kdreyer@redhat.com',
     version=version,
     license='MIT',
     zip_safe=False,
