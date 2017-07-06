@@ -4,4 +4,4 @@ from .variants import Variants
 
 __all__ = ['Build', 'Comps', 'Variants']
 
-__version__ = '1.3.0'
+__version__ = '1.3.1'
