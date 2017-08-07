@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 import kobo.conf
+import rhcephcompose
 from rhcephcompose.compose import Compose
 
 
@@ -29,6 +30,8 @@ class RHCephCompose(object):
         parser.add_argument('--compose-type', metavar='TYPE', default='test',
                             help='choose compose type to determine suffix: '
                             'production, nightly, test, ci (default: test)')
+        version = 'rhcephcompose %s' % rhcephcompose.__version__
+        parser.add_argument('--version', action='version', version=version)
         args = parser.parse_args()
 
         conf = kobo.conf.PyConfigParser()

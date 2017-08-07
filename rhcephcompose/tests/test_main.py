@@ -1,5 +1,6 @@
 import os
 import sys
+import rhcephcompose
 from rhcephcompose import main
 import pytest
 
@@ -49,3 +50,15 @@ class TestMain(object):
         monkeypatch.setattr(main, 'Compose', recorder)
         main.RHCephCompose()
         assert recorder.conf['chacra_ssl_verify'] is False
+
+    def test_version(self, monkeypatch, capsys):
+        monkeypatch.setattr(sys, 'argv', ['rhcephcompose', '--version'])
+        with pytest.raises(SystemExit):
+            main.RHCephCompose()
+        out, err = capsys.readouterr()
+        expected = "rhcephcompose %s\n" % rhcephcompose.__version__
+        # py34 and newer print to stdout.
+        if sys.version_info >= (3, 4):
+            assert out == expected
+        else:
+            assert err == expected
