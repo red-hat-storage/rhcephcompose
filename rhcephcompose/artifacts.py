@@ -40,13 +40,15 @@ class PackageArtifact(object):
             self.verified_caches.add(cache_file)
         return digest == self.checksum
 
-    def download(self, cache_dir, dest_dir=None):
+    def download(self, cache_dir, dest_dir=None, session=None):
         """ Download self.url to cache_dir, then copy to dest_dir. """
         # Ensure that these args really are directories:
         if not os.path.isdir(cache_dir):
             os.makedirs(cache_dir)
         if dest_dir is not None and not os.path.isdir(dest_dir):
             os.makedirs(self.dest_dir)
+        if not session:
+            session = requests.Session()
         # Calculate the download destination in the cache_dir:
         cache_dest = os.path.join(cache_dir, self.filename)
         # Do we have a cached copy of this file, or not?
