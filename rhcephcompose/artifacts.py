@@ -9,10 +9,11 @@ from rhcephcompose.log import log
 
 class PackageArtifact(object):
     """ Artifact from a Chacra build. Base class. """
-    def __init__(self, url, checksum, ssl_verify=True):
+    def __init__(self, url, checksum, ssl_verify=True, checksum_method=sha512):
         self.url = url
         self.checksum = checksum
         self.ssl_verify = ssl_verify
+        self.checksum_method = checksum_method
         self.verified_caches = set()
 
     @property
@@ -30,7 +31,7 @@ class PackageArtifact(object):
         """
         if cache_file in self.verified_caches:
             return True
-        chsum = sha512()
+        chsum = self.checksum_method()
         with open(cache_file, 'rb') as f:
             for chunk in iter(lambda: f.read(4096), b''):
                 chsum.update(chunk)
@@ -61,7 +62,7 @@ class PackageArtifact(object):
                     f.write(chunk)
         # Sanity-check this cached file's checksum.
         if not self.verify_checksum(cache_dest):
-            raise RuntimeError('%s: sha512sum is not %s' %
+            raise RuntimeError('%s: checksum is not %s' %
                                (cache_dest, self.checksum))
         if dest_dir is not None:
             copy(cache_dest, dest_dir)
