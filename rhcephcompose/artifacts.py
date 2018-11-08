@@ -44,7 +44,7 @@ class PackageArtifact(object):
         """ Download self.url to cache_dir, then copy to dest_dir. """
         # Ensure that these args really are directories:
         if not os.path.isdir(cache_dir):
-            os.makedirs(self.cache_dir)
+            os.makedirs(cache_dir)
         if dest_dir is not None and not os.path.isdir(dest_dir):
             os.makedirs(self.dest_dir)
         # Calculate the download destination in the cache_dir:
