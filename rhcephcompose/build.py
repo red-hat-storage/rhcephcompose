@@ -92,3 +92,6 @@ class Build(object):
                                checksum=source_checksum,
                                ssl_verify=self.ssl_verify)
             self.sources.append(s)
+
+    def __repr__(self):
+        return '%s("%s")' % (self.__class__.__name__, self.build_id)
