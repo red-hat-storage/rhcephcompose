@@ -13,7 +13,7 @@ class CompsGroup(list):
 class Comps(object):
 
     def __init__(self):
-        self.all_packages = []
+        self.all_packages = set()
         self.groups = {}
 
     def parse_file(self, filename):
@@ -30,7 +30,7 @@ class Comps(object):
                         # Populate our CompsGroup
                         group.append(pkg.text)
                         # Also store this in the "all_packages" list
-                        self.all_packages.append(pkg.text)
+                        self.all_packages.add(pkg.text)
             if not group.group_id:
                 log.error('No group <id> found in <group>')
                 exit(1)

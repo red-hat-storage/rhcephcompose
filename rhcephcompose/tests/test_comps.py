@@ -6,7 +6,7 @@ class TestComps(object):
 
     def test_constructor(self):
         c = Comps()
-        assert c.all_packages == []
+        assert c.all_packages == set()
         assert c.groups == {}
 
     def test_parse_basic_file(self, fixtures_dir):
