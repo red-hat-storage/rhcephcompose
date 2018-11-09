@@ -2,6 +2,18 @@ import xml.etree.ElementTree as ET
 
 
 class Variants(dict):
+    """
+    Class to parse and manage variants.
+
+    Usage:
+
+    variants = Variants()
+    variants.parse_file(self.variants_file)
+    for variant, groups in variants.items():
+        print(variant)  # "Tools"
+        for group in groups:
+            print(group)  # "ceph-tools" (comps group)
+    """
 
     def parse_file(self, filename):
         tree = ET.parse(filename)
