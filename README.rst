@@ -24,7 +24,7 @@ shipping the RH Ceph Enterprise product for Ubuntu.
 See Also
 --------
 * ``rhcephcompose`` interacts with a `Chacra
-  <https://pypi.python.org/pypi/merfi>`_ instance. It queries Chacra's
+  <https://github.com/ceph/chacra>`_ instance. It queries Chacra's
   API for build information and downloads build artifacts stored in Chacra.
   (This is a bit similar to the way Pungi interacts with Koji.)
 
