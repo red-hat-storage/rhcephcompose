@@ -71,6 +71,7 @@ class Compose(object):
         self.date = time.strftime('%Y%m%d')
         # We only support one arch: x86_64.
         self.arch = 'x86_64'
+        self.respin = self._find_respin()
 
     def validate(self):
         """
@@ -114,36 +115,49 @@ class Compose(object):
                                                           filename)
                         raise RuntimeError(msg)
 
-    @property
-    def output_dir(self):
+    def _generate_id(self, respin):
         """
+        Generate a compose ID for this respin.
+
+        :param int respin: a respin number for this compose
+        :returns: a compose ID
+        """
+        compose_type = COMPOSE_TYPE_MAP[self.compose_type]
+        name_tmpl = '{release_short}-{release_version}-{oslabel}-{arch}-{date}{compose_type}.{respin}'  # NOQA
+        return name_tmpl.format(release_short=self.release_short,
+                                release_version=self.release_version,
+                                oslabel='Ubuntu',
+                                date=self.date,
+                                arch=self.arch,
+                                compose_type=compose_type,
+                                respin=respin)
+
+    def _find_respin(self):
+        """
+        Find the next available respin number in self.target.
+
         Use the same logic that pungi/compose.py uses in order come up with
         the name for the output directory. The name should be something
         like "Ceph-1.3-Ubuntu-20160922.t.0-x86_64" to match what
         Pungi creates.
         """
-        if getattr(self, '_output_directory', None):
-            return self._output_directory
-        compose_name = '{release_short}-{release_version}-{oslabel}-{arch}-{compose_date}{compose_type}.{compose_respin}'  # NOQA
-        compose_type = COMPOSE_TYPE_MAP[self.compose_type]
-        compose_respin = 0
+        respin = 0
         while 1:
-            output_dir = os.path.join(self.target, compose_name.format(
-                release_short=self.release_short,
-                release_version=self.release_version,
-                oslabel='Ubuntu',
-                compose_date=self.date,
-                arch='x86_64',
-                compose_type=compose_type,
-                compose_respin=compose_respin
-            ))
+            compose_id = self._generate_id(respin)
+            output_dir = os.path.join(self.target, compose_id)
             if os.path.isdir(output_dir):
                 log.info('Found prior compose dir: %s' % output_dir)
-                compose_respin += 1
+                respin += 1
                 continue
-            log.info('Using new compose dir: %s' % output_dir)
-            self._output_directory = output_dir
-            return output_dir
+            return respin
+
+    @property
+    def id(self):
+        return self._generate_id(self.respin)
+
+    @property
+    def output_dir(self):
+        return os.path.join(self.target, self.id)
 
     def run(self):
         """ High-level function to execute a compose. """
