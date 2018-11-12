@@ -217,7 +217,11 @@ class Compose(object):
                    latest_path)
 
     def run_distro(self, distro):
-        """ Execute a compose for a distro. """
+        """
+        Execute a compose for a distro.
+
+        :returns: list of builds for this distro.
+        """
 
         # Read pkg mappings from Pungi-style comps XML.
         # (Assembles a master list of package names that we will need.)
@@ -284,6 +288,8 @@ class Compose(object):
         if self.include_dbg:
             dbg_path = self.output_dir + '-dbg'
             self.create_repo(dbg_path, distro, dbg_binaries)
+
+        return builds
 
     def create_repo(self, repo_path, distro, binaries):
         """ Create a repository at repo_path. """
