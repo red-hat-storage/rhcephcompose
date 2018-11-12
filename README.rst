@@ -23,10 +23,10 @@ shipping the RH Ceph Enterprise product for Ubuntu.
 
 See Also
 --------
-* ``rhcephcompose`` interacts with a `Chacra
-  <https://github.com/ceph/chacra>`_ instance. It queries Chacra's
-  API for build information and downloads build artifacts stored in Chacra.
-  (This is a bit similar to the way Pungi interacts with Koji.)
+* ``rhcephcompose`` interacts with `Koji instance <https://pagure.io/koji>`_
+  or a `Chacra <https://github.com/ceph/chacra>`_ instance. It queries Koji's
+  API or Chacra's API for build information and downloads build artifacts
+  stored there. (This is a bit similar to the way Pungi interacts with Koji.)
 
 * After creating a compose, you may wish to GPG-sign it with `Merfi
   <https://pypi.python.org/pypi/merfi>`_.
@@ -39,22 +39,14 @@ In the RHEL world, el6 and el7 repositories are typically separated into two
 entirely different trees in the filesystem. In Debian, a repository can mix
 several distribution versions together.
 
-Chacra has an API for ``distro_version``. Since we combine both Trusty and
-Xenial for some packages, this introduces complexity. So I store all binaries
-in "distro_version" of "all", and then use the XML and builds to determine what
-should be tagged with what.
-
-In a Brew world, we would be able to tag one build with multiple -candidate
-tags, but in Chacra there is only a one-to-one relationship between builds and
-distro_versions. So with Brew, we'd be able to tag "ceph-deploy-1.2.3" as both
-"ceph-1.3-trusty-candidate" and "ceph-1.3-xenial-candidate", but in Chacra I
-can't easily do that for individual builds.
+Using Koji, we can tag one build with multiple -candidate tags. In other
+words, we can tag "ceph-ansible-3.2.0-2redhat1" as both
+"ceph-3.2-xenial-candidate" and "ceph-3.2-bionic-candidate".
 
 In dist-git for Ubuntu, I store the branches as "-ubuntu" in order to combine
 the codebase for "-trusty" and "-xenial". The reason for this is that I always
 ended up keeping "ceph-1.2-rhel-6" and "ceph-1.2-rhel-7" identical, and it was
-a pain to do that manually. As described above, I also keep all the builds
-"combined" within Chacra.
+a pain to do that manually.
 
 Caching
 -------

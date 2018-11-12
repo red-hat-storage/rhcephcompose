@@ -77,6 +77,7 @@ setup(
     keywords='compose, pungi',
     long_description=LONG_DESCRIPTION,
     scripts=['bin/rhcephcompose'],
+    # Koji is not a hard dependency here for Travis CI's sake
     install_requires=[
         'kobo',
         'requests',

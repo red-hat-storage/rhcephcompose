@@ -4,6 +4,7 @@ import os
 from rhcephcompose import Comps, Variants
 from rhcephcompose import gather
 from rhcephcompose.gather import chacra
+from rhcephcompose.gather import koji
 from rhcephcompose.log import log
 from shutil import copy
 import subprocess
@@ -38,9 +39,9 @@ class Compose(object):
         # Variants file copied directly from what we use with Pungi on
         # RHEL.
         self.variants_file = conf['variants_file']
-        # In Pungi terminology, assume pkgset_source "chacra" (instead
-        # of "koji").
-        self.chacra_url = conf['chacra_url']
+        # Set koji_profile or chacra_url.
+        self.koji_profile = conf.get('koji_profile')
+        self.chacra_url = conf.get('chacra_url')
         self.chacra_ssl_verify = conf.get('chacra_ssl_verify', True)
         # Lookaside cache location.
         # See freedesktop.org spec for XDG_CACHE_HOME
@@ -72,8 +73,10 @@ class Compose(object):
         """
         Sanity-check that files exist before we go to the work of running.
         """
-        # builds lists
-        self.validate_builds_lists()
+        if not self.koji_profile:
+            if self.chacra_url is None:
+                raise RuntimeError('Set koji_profile or chacra_url')
+            self.validate_builds_lists()
         # comps XML
         for comps_file in self.comps.values():
             if not os.access(comps_file, os.R_OK):
@@ -223,11 +226,17 @@ class Compose(object):
         comps.parse_file(comps_file)
 
         # Query chacra for our list of builds.
-        builds_file = self.builds[distro]  # builds .txt file for this distro
-        builds = chacra.query(builds_file=builds_file,
-                              chacra_url=self.chacra_url,
-                              whitelist=comps.all_packages,
-                              ssl_verify=self.chacra_ssl_verify)
+        if self.koji_profile:
+            tag = self.builds[distro]
+            builds = koji.query(profile=self.koji_profile,
+                                tag=tag,
+                                whitelist=comps.all_packages)
+        else:
+            builds_file = self.builds[distro]  # builds .txt for this distro
+            builds = chacra.query(builds_file=builds_file,
+                                  chacra_url=self.chacra_url,
+                                  whitelist=comps.all_packages,
+                                  ssl_verify=self.chacra_ssl_verify)
 
         # Cache all our builds into self.cache_dir.
         gather.cache(builds=builds,
