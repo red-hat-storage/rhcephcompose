@@ -1,7 +1,9 @@
 import errno
 import glob
 import os
-from rhcephcompose import Build, Comps, Variants
+from rhcephcompose import Comps, Variants
+from rhcephcompose import gather
+from rhcephcompose.gather import chacra
 from rhcephcompose.log import log
 from shutil import copy
 import subprocess
@@ -213,29 +215,30 @@ class Compose(object):
     def run_distro(self, distro):
         """ Execute a compose for a distro. """
 
-        # Read the "builds_path" text file for this distro. Create a list of
-        # each line of this file.
-        builds_path = self.builds[distro]
-        build_ids = [line.rstrip('\n') for line in open(builds_path)]
-
-        log.info('Found %d build ids in "%s"' % (len(build_ids), builds_path))
-
         # Read pkg mappings from Pungi-style comps XML.
         # (Assembles a master list of package names that we will need.)
         comps_file = self.comps[distro]
         comps = Comps()
         comps.parse_file(comps_file)
 
+        # Query chacra for our list of builds.
+        builds_file = self.builds[distro]  # builds .txt file for this distro
+        builds = chacra.query(builds_file=builds_file,
+                              chacra_url=self.chacra_url,
+                              whitelist=comps.all_packages,
+                              ssl_verify=self.chacra_ssl_verify)
+
+        # Cache all our builds into self.cache_dir.
+        gather.cache(builds=builds,
+                     cache_dir=self.cache_path,
+                     ssl_verify=self.chacra_ssl_verify)
+
         # Assign the builds' files to the correct groups, according to
         # comps.xml + variants.xml.
 
         dbg_binaries = set()
 
-        for build_id in build_ids:
-            build = Build(build_id, ssl_verify=self.chacra_ssl_verify)
-            # Find all the (whitelisted) binaries for this build.
-            build.find_artifacts_from_chacra(chacra=self.chacra_url,
-                                             whitelist=comps.all_packages)
+        for build in builds:
             # Assign each binary to its respective comps group(s).
             for binary in build.binaries:
                 comps.assign_binary_to_groups(binary)
@@ -248,6 +251,8 @@ class Compose(object):
                 # Top-level "sources" directory, parallel to our output_dir.
                 sources_dir = self.output_dir + '-sources'
                 for source in build.sources:
+                    # We've already downloaded to cache_path earlier, so this
+                    # is just a copy operation now:
                     source.download(cache_dir=self.cache_path,
                                     dest_dir=sources_dir)
 
@@ -305,7 +310,6 @@ class Compose(object):
 
     def add_binary_to_repo(self, binary, repo_path, distro):
         """ Add a binary (.deb) to a Debian repository. """
-        binary.download(cache_dir=self.cache_path)
         msg = 'Running reprepro to add %s to %s distro in %s'
         log.info(msg % (binary.name, distro, repo_path))
         binary_path = os.path.join(self.cache_path, binary.filename)
