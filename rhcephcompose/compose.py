@@ -96,12 +96,12 @@ class Compose(object):
             if not os.access(filename, os.R_OK):
                 raise RuntimeError('Unreadable builds file %s' % filename)
             # Sanity-check the build NVRs for any mention of other_distros.
-            builds = [line.rstrip('\n') for line in open(filename)]
+            build_ids = [line.rstrip('\n') for line in open(filename)]
             other_distros = [d for d in distros if d != distro]
-            for build in builds:
+            for build_id in build_ids:
                 for bad_distro in other_distros:
-                    if bad_distro in build:
-                        msg = '%s build %s in file %s' % (bad_distro, build,
+                    if bad_distro in build_id:
+                        msg = '%s build %s in file %s' % (bad_distro, build_id,
                                                           filename)
                         raise RuntimeError(msg)
 
@@ -216,9 +216,9 @@ class Compose(object):
         # Read the "builds_path" text file for this distro. Create a list of
         # each line of this file.
         builds_path = self.builds[distro]
-        builds = [line.rstrip('\n') for line in open(builds_path)]
+        build_ids = [line.rstrip('\n') for line in open(builds_path)]
 
-        log.info('Found %d build ids in "%s"' % (len(builds), builds_path))
+        log.info('Found %d build ids in "%s"' % (len(build_ids), builds_path))
 
         # Read pkg mappings from Pungi-style comps XML.
         # (Assembles a master list of package names that we will need.)
@@ -231,7 +231,7 @@ class Compose(object):
 
         dbg_binaries = set()
 
-        for build_id in builds:
+        for build_id in build_ids:
             build = Build(build_id, ssl_verify=self.chacra_ssl_verify)
             # Find all the (whitelisted) binaries for this build.
             build.find_artifacts_from_chacra(chacra=self.chacra_url,
