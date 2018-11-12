@@ -21,5 +21,7 @@ def query(builds_file, chacra_url, whitelist, ssl_verify):
         build = Build(build_id, ssl_verify=ssl_verify)
         build.find_artifacts_from_chacra(chacra=chacra_url,
                                          whitelist=whitelist)
+        if not build.binaries:
+            raise RuntimeError('no binaries whitelisted for %s' % build_id)
         builds.append(build)
     return builds
