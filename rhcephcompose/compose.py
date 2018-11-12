@@ -68,6 +68,7 @@ class Compose(object):
         self.compose_type = conf.get('compose_type', 'test')
         # Whether -dbg composition should be included or skipped
         self.include_dbg = conf.get('include_dbg', True)
+        self.date = time.strftime('%Y%m%d')
 
     def validate(self):
         """
@@ -121,7 +122,6 @@ class Compose(object):
         """
         if getattr(self, '_output_directory', None):
             return self._output_directory
-        compose_date = time.strftime('%Y%m%d')
         compose_name = '{release_short}-{release_version}-{oslabel}-{arch}-{compose_date}{compose_type}.{compose_respin}'  # NOQA
         compose_type = COMPOSE_TYPE_MAP[self.compose_type]
         compose_respin = 0
@@ -130,7 +130,7 @@ class Compose(object):
                 release_short=self.release_short,
                 release_version=self.release_version,
                 oslabel='Ubuntu',
-                compose_date=compose_date,
+                compose_date=self.date,
                 arch='x86_64',
                 compose_type=compose_type,
                 compose_respin=compose_respin
