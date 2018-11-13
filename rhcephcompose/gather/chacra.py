@@ -12,7 +12,8 @@ def query(builds_file, chacra_url, whitelist, ssl_verify):
     :param ssl_verify: verify HTTPS connection or not
     :returns: list of rhcephcompose Build objects
     """
-    build_ids = [line.rstrip('\n') for line in open(builds_file)]
+    with open(builds_file, 'r') as builds_fh:
+        build_ids = [line.rstrip('\n') for line in builds_fh]
 
     log.info('Found %d build ids in "%s"' % (len(build_ids), builds_file))
 
