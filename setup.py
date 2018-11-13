@@ -64,6 +64,7 @@ class PyTest(TestCommand):
         errno = pytest.main('rhcephcompose ' + self.pytest_args)
         sys.exit(errno)
 
+
 setup(
     name='rhcephcompose',
     description='Distribution compose tool',
