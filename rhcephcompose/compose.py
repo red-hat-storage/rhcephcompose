@@ -69,6 +69,8 @@ class Compose(object):
         # Whether -dbg composition should be included or skipped
         self.include_dbg = conf.get('include_dbg', True)
         self.date = time.strftime('%Y%m%d')
+        # We only support one arch: x86_64.
+        self.arch = 'x86_64'
 
     def validate(self):
         """
@@ -201,7 +203,7 @@ class Compose(object):
             release_short=self.release_short,
             major_version=major_version,
             oslabel='Ubuntu',
-            arch='x86_64',
+            arch=self.arch,
         )
 
     def symlink_latest(self):
