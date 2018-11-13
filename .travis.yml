@@ -11,3 +11,8 @@ script:
 after_success:
   - coveralls
 cache: pip
+addons:
+  apt:
+    packages:
+    - rpm
+    - librpm-dev
