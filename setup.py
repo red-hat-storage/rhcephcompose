@@ -10,7 +10,7 @@ readme = os.path.join(os.path.dirname(__file__), 'README.rst')
 LONG_DESCRIPTION = open(readme).read()
 
 module_file = open('rhcephcompose/__init__.py').read()
-metadata = dict(re.findall("__([a-z]+)__\s*=\s*'([^']+)'", module_file))
+metadata = dict(re.findall(r"__([a-z]+)__\s*=\s*'([^']+)'", module_file))
 version = metadata['version']
 
 
