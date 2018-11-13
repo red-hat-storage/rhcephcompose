@@ -80,6 +80,7 @@ setup(
     # Koji is not a hard dependency here for Travis CI's sake
     install_requires=[
         'kobo',
+        'productmd',
         'requests',
     ],
     tests_require=[

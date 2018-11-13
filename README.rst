@@ -63,6 +63,15 @@ rhcephcompose with Jenkins, you can do this automatically by setting
 ``$XDG_CACHE_HOME`` to a location within the job's workspace, and then have
 Jenkins simply clean up the workspace.
 
+Metadata
+--------
+
+rhcephcompose writes some metadata about the compose into a ``metadata``
+subdirectory. You can read the basic ``composeinfo.json`` file with productmd
+`productmd <https://github.com/release-engineering/productmd>`_ . rhcephcompose
+also writes a custom ``debs.json`` file with a list of all the builds in each
+distribution.
+
 SSL errors
 ----------
 

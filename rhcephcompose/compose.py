@@ -3,6 +3,7 @@ import glob
 import os
 from rhcephcompose import Comps, Variants
 from rhcephcompose import gather
+from rhcephcompose import metadata
 from rhcephcompose.gather import chacra
 from rhcephcompose.gather import koji
 from rhcephcompose.log import log
@@ -182,6 +183,8 @@ class Compose(object):
             sources_dir = self.output_dir + '-sources'
             os.mkdir(sources_dir)
 
+        build_metadata = {}
+
         # Run the steps for each distro.
         for distro in self.builds.keys():
             # (We assume that all keys in self.builds also exist in
@@ -191,7 +194,7 @@ class Compose(object):
                        'configuration is missing a "{0}" key. Please add a '
                        'comps XML file for this distro.').format(distro)
                 raise SystemExit(msg)
-            self.run_distro(distro)
+            build_metadata[distro] = self.run_distro(distro)
 
         # Copy any extra files to the root of the compose.
         for extra_file in self.extra_files:
@@ -205,6 +208,9 @@ class Compose(object):
             if 'file' in extra_file:
                 copy(os.path.join('extra_files', extra_file['file']),
                      self.output_dir)
+
+        # write compose metadata
+        metadata.write(self, build_metadata)
 
         # create "latest" symlink
         self.symlink_latest()
