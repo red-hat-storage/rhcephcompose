@@ -98,7 +98,8 @@ class Compose(object):
             if not os.access(filename, os.R_OK):
                 raise RuntimeError('Unreadable builds file %s' % filename)
             # Sanity-check the build NVRs for any mention of other_distros.
-            build_ids = [line.rstrip('\n') for line in open(filename)]
+            with open(filename, 'r') as builds_fh:
+                build_ids = [line.rstrip('\n') for line in builds_fh]
             other_distros = [d for d in distros if d != distro]
             for build_id in build_ids:
                 for bad_distro in other_distros:
