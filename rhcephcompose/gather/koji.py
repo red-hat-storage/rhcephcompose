@@ -35,7 +35,9 @@ def query(profile, tag, whitelist):
         # Look up the list of files for this build.
         files = session.listArchives(buildinfo['id'])
         # Find all the .debs (and corresponding dbg .debs) in our whitelist.
-        for filedata in [f for f in files if f['type_name'] == 'deb']:
+        for filedata in files:
+            if filedata['type_name'] != 'deb':
+                continue
             b = parse_artifact(filedata, directory)
             if b.name in whitelist:
                 log.info('"%s" is in whitelist, saving' % b.name)
