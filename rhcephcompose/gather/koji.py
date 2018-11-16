@@ -23,12 +23,12 @@ def query(profile, tag, whitelist):
         raise RuntimeError('Please install the koji Python library')
     # Query koji for all builds in the tag.
     session = common_koji.get_session(profile)
-    buildinfolist = session.listTagged(tag, inherit=True, latest=True,
-                                       type='debian')
+    buildinfos = session.listTagged(tag, inherit=True, latest=True,
+                                    type='debian')
     pathinfo = common_koji.get_koji_pathinfo(profile)
     # Query koji for all files in all builds.
     builds = set()
-    for buildinfo in buildinfolist:
+    for buildinfo in buildinfos:
         build = Build(buildinfo['name'])
         # Get the URL of the directory for this build.
         directory = pathinfo.typedir(buildinfo, 'debian')
