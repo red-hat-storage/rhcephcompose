@@ -69,7 +69,7 @@ class Compose(object):
         self.compose_type = conf.get('compose_type', 'test')
         # Whether -dbg composition should be included or skipped
         self.include_dbg = conf.get('include_dbg', True)
-        self.date = time.strftime('%Y%m%d')
+        self.date = time.strftime('%Y%m%d', time.gmtime())
         # We only support one arch: x86_64.
         self.arch = 'x86_64'
         self.respin = self._find_respin()
