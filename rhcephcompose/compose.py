@@ -143,14 +143,23 @@ class Compose(object):
         Pungi creates.
         """
         respin = 0
-        while 1:
-            compose_id = self._generate_id(respin)
-            output_dir = os.path.join(self.target, compose_id)
-            if os.path.isdir(output_dir):
-                log.info('Found prior compose dir: %s' % output_dir)
-                respin += 1
-                continue
-            return respin
+        while self._compose_id_dir_exists(respin):
+            respin += 1
+        return respin
+
+    def _compose_id_dir_exists(self, respin):
+        """
+        Return True if a compose ID directory exists for this respin.
+
+        :param int respin: respin number for generating an ID
+        :returns: True if the directory exists, or False if it does not exist
+        """
+        compose_id = self._generate_id(respin)
+        directory = os.path.join(self.target, compose_id)
+        if os.path.isdir(directory):
+            log.info('Found prior compose dir: %s' % directory)
+            return True
+        return False
 
     @property
     def id(self):
