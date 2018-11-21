@@ -4,7 +4,7 @@ import re
 import subprocess
 import sys
 from setuptools.command.test import test as TestCommand
-from setuptools import setup, Command
+from setuptools import setup, find_packages, Command
 try:
     # Python 2 backwards compat
     from __builtin__ import raw_input as input
@@ -162,7 +162,7 @@ class PyTest(TestCommand):
 setup(
     name='rhcephcompose',
     description='Distribution compose tool',
-    packages=['rhcephcompose'],
+    packages=find_packages(),
     author='Ken Dreyer',
     author_email='kdreyer@redhat.com',
     version=version,
