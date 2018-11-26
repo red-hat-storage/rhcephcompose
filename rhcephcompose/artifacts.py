@@ -57,7 +57,7 @@ class PackageArtifact(object):
             log.info(msg % (self.filename, cache_dir))
         else:
             log.info('Caching %s in %s' % (self.url, cache_dir))
-            r = requests.get(self.url, stream=True, verify=self.ssl_verify)
+            r = session.get(self.url, stream=True, verify=self.ssl_verify)
             r.raise_for_status()
             with open(cache_dest, 'wb') as f:
                 for chunk in r.iter_content(1024):
