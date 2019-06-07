@@ -18,7 +18,7 @@ product's output.
 Composes are release snapshots that contain release deliverables such as
 installation trees with RPMs and Yum repodata. ``rhcephcompose`` creates an
 installation tree for Ubuntu packages. In Red Hat we use it for developing and
-shipping the RH Ceph Enterprise product for Ubuntu.
+shipping the RH Ceph Storage product for Ubuntu.
 
 
 See Also
