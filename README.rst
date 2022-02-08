@@ -1,11 +1,8 @@
 ``rhcephcompose``
 =================
 
-.. image:: https://travis-ci.org/red-hat-storage/rhcephcompose.svg?branch=master
-             :target: https://travis-ci.org/red-hat-storage/rhcephcompose
-
-.. image:: https://badge.fury.io/py/rhcephcompose.svg
-                :target: https://badge.fury.io/py/rhcephcompose
+**Note: this tool is unmaintained. Red Hat does not publish Red Hat Ceph
+Storage for Ubuntu any more, so we do not maintain this tool any more.**
 
 A tool to gather build artifacts and assemble them into a set of repositories.
 
